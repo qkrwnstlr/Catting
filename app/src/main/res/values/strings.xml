@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">SignUpApp</string>
     <string name="sign_up_text"><u>Sign Up</u></string>
+    <string name="main_catting_title">Catting</string>
+    <string name="main_user_info_title">User Info</string>
+    <string name="main_file_title">File</string>
 </resources>
