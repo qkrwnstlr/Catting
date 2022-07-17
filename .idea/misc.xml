@@ -12,13 +12,21 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/drawable/ic_baseline_person_outline_24.xml" value="0.4185" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/drawable/ic_baseline_person_outline_36.xml" value="0.4185" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.2735" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/activity_chatting.xml" value="0.31302083333333336" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/activity_sign_in.xml" value="0.5536458333333333" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/activity_setting.xml" value="0.5390625" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/activity_setting_activivy.xml" value="0.5536458333333333" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/activity_sign_in.xml" value="0.25" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/activity_sign_up.xml" value="0.5536458333333333" />
-        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/fragment_chatting.xml" value="0.31302083333333336" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/fragment_chatting.xml" value="0.33" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/fragment_file.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/fragment_setting.xml" value="0.31302083333333336" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/fragment_user_info.xml" value="0.3125" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/menu/chatting_toolbar.xml" value="0.31302083333333336" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/menu/main_toolbar.xml" value="0.5536458333333333" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/menu/setting_toolbar.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/menu/toolbar.xml" value="0.31302083333333336" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.316" />
       </map>
     </option>
   </component>

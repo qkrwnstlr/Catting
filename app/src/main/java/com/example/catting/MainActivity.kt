@@ -1,5 +1,6 @@
 package com.example.catting
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -31,7 +32,9 @@ class MainActivity : AppCompatActivity() {
                 tab.setIcon(mainFragmentName[position])
             }.attach()
 
+            // 뷰 페이저 스와이프 막기
             veiwPager.isUserInputEnabled = false
+            // 탭 레이아웃 선택시 수행 동작 설정
             mainTab.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     // 뷰 페이저 화면 전환 애니메이션 제거
@@ -56,6 +59,16 @@ class MainActivity : AppCompatActivity() {
             })
 
         }
+    }
+
+    fun openChattingActivity(){
+        val intent = Intent(this@MainActivity, ChattingActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun openSettingActivity(){
+        val intent = Intent(this@MainActivity, SettingActivity::class.java)
+        startActivity(intent)
     }
 }
 

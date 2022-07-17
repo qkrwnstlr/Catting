@@ -10,6 +10,7 @@
         android:id="@+id/veiwPager"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/main_white"
         app:layout_constraintBottom_toTopOf="@+id/main_tab"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

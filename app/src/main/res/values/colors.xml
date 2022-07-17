@@ -11,5 +11,13 @@
     <color name="main_orange">#FFF0A500</color>
     <color name="main_brown">#FFCF7500</color>
     <color name="main_black">#FF1A1C20</color>
+    <color name="setting_white">#FFF4F4F4</color>
+    <color name="setting_orange">#FFF0A500</color>
+    <color name="setting_brown">#FFCF7500</color>
+    <color name="setting_black">#FF1A1C20</color>
+    <color name="chatting_white">#FFF4F4F4</color>
+    <color name="chatting_orange">#FFF0A500</color>
+    <color name="chatting_brown">#FFCF7500</color>
+    <color name="chatting_black">#FF1A1C20</color>
     <color name="blue_link_text">#FF0000FF</color>
 </resources>
