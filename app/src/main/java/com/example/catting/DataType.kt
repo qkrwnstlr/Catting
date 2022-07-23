@@ -19,7 +19,7 @@ class UserInfo(val uid: String?, val nickName: String?, val camID: String?, val 
         parcel.writeString(uid)
         parcel.writeString(nickName)
         parcel.writeString(camID)
-        parcel.writeList(cats as List<CatProfile>)
+        parcel.writeTypedList(cats as List<CatProfile>)
     }
 
     override fun describeContents(): Int {
