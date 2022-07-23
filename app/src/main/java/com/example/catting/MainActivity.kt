@@ -3,18 +3,38 @@ package com.example.catting
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.catting.databinding.ActivityMainBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import io.socket.client.Socket
 
 class MainActivity : AppCompatActivity() {
     val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    lateinit var socket: Socket
+    lateinit var signInResult :ActivityResultLauncher<Intent>
+    lateinit var userInfo: UserInfo
+    var mBackWait:Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        socket = SocketApplication.get()
+        socket.connect()
+
+        signInResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if(it.resultCode == RESULT_OK) {
+                val data: Intent? = it.data
+                userInfo = data?.getParcelableExtra<UserInfo>("userInfo")!!
+            }
+        }
+
+        val intent = Intent(this@MainActivity, SignInActivity::class.java)
+        signInResult.launch(intent)
 
         with(binding) {
             // 1. 페이지 데이터를 로드
@@ -58,6 +78,16 @@ class MainActivity : AppCompatActivity() {
                 }
             })
 
+        }
+    }
+
+    override fun onBackPressed() {
+        // 뒤로가기 버튼 클릭
+        if(System.currentTimeMillis() - mBackWait >=2000 ) {
+            mBackWait = System.currentTimeMillis()
+            Snackbar.make(binding.veiwPager,"뒤로가기 버튼을 한번 더 누르면 종료됩니다.",Snackbar.LENGTH_LONG).show()
+        } else {
+            finish() //액티비티 종료
         }
     }
 

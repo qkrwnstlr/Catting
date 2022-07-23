@@ -2,6 +2,7 @@ package com.example.catting
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -39,5 +40,17 @@ class FileFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 프래그먼트 재시작
+        Log.d("FileFragment","onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // 프래그먼트 전환
+        Log.d("FileFragment","onPause")
     }
 }

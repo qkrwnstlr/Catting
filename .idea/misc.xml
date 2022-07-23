@@ -22,6 +22,14 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/fragment_file.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/fragment_setting.xml" value="0.31302083333333336" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/fragment_user_info.xml" value="0.3125" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/item_chatting_bubble.xml" value="0.31666666666666665" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/item_chatting_cat_list.xml" value="0.33" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/item_chatting_image_bubble.xml" value="0.5526041666666667" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/item_chatting_image_cat_bubble.xml" value="0.5526041666666667" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/item_chatting_loading.xml" value="0.5526041666666667" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/item_chatting_log.xml" value="0.4534188034188034" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/item_chatting_text_bubble.xml" value="0.5526041666666667" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/item_chatting_text_cat_bubble.xml" value="0.5526041666666667" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/menu/chatting_toolbar.xml" value="0.31302083333333336" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/menu/main_toolbar.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/menu/setting_toolbar.xml" value="0.5536458333333333" />

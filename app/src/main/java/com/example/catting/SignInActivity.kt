@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.catting.databinding.ActivitySignInBinding
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
+import org.json.JSONArray
 import org.json.JSONObject
 
 class SignInActivity : AppCompatActivity() {
@@ -47,19 +48,30 @@ class SignInActivity : AppCompatActivity() {
             }
         }
     }
+
     val signInResult = Emitter.Listener { args ->
         val obj = JSONObject(args[0].toString())
-        Thread(object : Runnable{
-            override fun run() {
-                runOnUiThread(Runnable {
-                    kotlin.run {
-                        if(obj.get("result") == "success"){
-                            // sign in 액티비티 새로 만들면 intent로 유저 정보 전송 필요
-                            finish()
-                        }
-                    }
-                })
-            }
-        }).start()
+        val uid = obj.get("uid").toString()
+        val nickName = obj.get("nickName").toString()
+        val camID = obj.get("camID").toString()
+        val catsObj = obj.optJSONArray("cats")
+        val cats = arrayListOf<CatProfile>()
+        for(i in 0..catsObj!!.length()){
+            val catObj = catsObj.getJSONObject(i)
+            val cid = catObj.get("cid").toString()
+            val cName = catObj.get("cName").toString()
+            val cPicture = catObj.get("cPictures").toString()
+            cats.plus(CatProfile(cid,cName,cPicture))
+        }
+        val userInfo = UserInfo(uid, nickName, camID, cats)
+
+        val intent = Intent(this@SignInActivity, SignInActivity::class.java)
+        intent.putExtra("userInfo", userInfo)
+        setResult(RESULT_OK, intent)
+        finish()
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
     }
 }
