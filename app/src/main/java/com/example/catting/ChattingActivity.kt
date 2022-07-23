@@ -2,22 +2,87 @@ package com.example.catting
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.catting.databinding.*
+import io.socket.client.Socket
+import io.socket.emitter.Emitter
+import org.json.JSONObject
 
 class ChattingActivity : AppCompatActivity() {
     val binding by lazy { ActivityChattingBinding.inflate(layoutInflater) }
-    private lateinit var model: ChattingViewModel
-    //private lateinit var bubbleAdapter: BubbleAdapter
-    private var page = 1 // 현재 페이지
-    var pageSize = 10
+    lateinit var socket : Socket
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         Log.d("NextFragment","onCreate")
+        with(binding){
+            inputText.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(p0: Editable?) {
+
+                }
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                }
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    if(inputText.text.toString()!=""){
+                        fileButton.visibility = View.INVISIBLE
+                        sendButton.visibility = View.VISIBLE
+                    }
+                    else{
+                        fileButton.visibility = View.VISIBLE
+                        sendButton.visibility = View.INVISIBLE
+                    }
+                }
+            })
+            plusButton.setOnClickListener{
+                plusButton.visibility = View.INVISIBLE
+                minusButton.visibility = View.VISIBLE
+                optiontLayout.visibility = View.VISIBLE
+            }
+            minusButton.setOnClickListener{
+                plusButton.visibility = View.VISIBLE
+                minusButton.visibility = View.INVISIBLE
+                optiontLayout.visibility = View.GONE
+            }
+            fileButton.setOnClickListener{
+
+            }
+            sendButton.setOnClickListener{
+                socket = MainActivity.getInstance()?.socket!!
+                val jsonObject = JSONObject()
+                jsonObject.put("email","")
+                socket.emit("SendMessage", jsonObject)
+                Thread(object : Runnable{
+                    override fun run() {
+                        runOnUiThread(Runnable {
+                            kotlin.run {
+                                // 리사이클러뷰에 유저 대사로 새로운 메시지 추가
+                            }
+                        })
+                    }
+                }).start()
+                socket.on("SendMessage", sendMessage)
+            }
+        }
+    }
+
+    var sendMessage = Emitter.Listener { args ->
+        val obj = JSONObject(args[0].toString())
+        Thread(object : Runnable{
+            override fun run() {
+                runOnUiThread(Runnable {
+                    kotlin.run {
+                        // 리사이클러뷰에 고양이 대사로 새로운 메시지 추가
+                    }
+                })
+            }
+        }).start()
     }
 
     override fun onPause() {
@@ -31,92 +96,3 @@ class ChattingActivity : AppCompatActivity() {
     }
 
 }
-
-/*class BubbleAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val VIEW_TYPE_LOADING = 0
-    private val VIEW_TYPE_TEXT_USER = 1
-    private val VIEW_TYPE_IMAGE_USER = 2
-    private val VIEW_TYPE_TEXT_CAT = 3
-    private val VIEW_TYPE_IMAGE_CAT = 4
-    private val items = ArrayList<Content>()
-
-    // 아이템뷰에 게시물이 들어가는 경우
-    inner class TextUserViewHolder(private val binding: ItemChattingTextUserBubbleBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(notice: Content) {
-            binding.tvTitle.text = notice.title
-            binding.tvDate.text = notice.created
-        }
-    }
-
-    inner class ImageUserViewHolder(private val binding: ItemChattingImageUserBubbleBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(notice: Content) {
-            binding.tvTitle.text = notice.title
-            binding.tvDate.text = notice.created
-        }
-    }
-
-    inner class TextCatViewHolder(private val binding: ItemChattingTextCatBubbleBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(notice: Content) {
-            binding.tvTitle.text = notice.title
-            binding.tvDate.text = notice.created
-        }
-    }
-
-    inner class ImageCatViewHolder(private val binding: ItemChattingImageCatBubbleBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(notice: Content) {
-            binding.tvTitle.text = notice.title
-            binding.tvDate.text = notice.created
-        }
-    }
-
-    // 아이템뷰에 프로그레스바가 들어가는 경우
-    inner class LoadingViewHolder(private val binding: ItemChattingLoadingBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-    }
-
-    // 뷰의 타입을 정해주는 곳이다.
-    override fun getItemViewType(position: Int): Int {
-        // 게시물과 프로그레스바 아이템뷰를 구분할 기준이 필요하다.
-        return when (items[position].title) {
-            " " -> VIEW_TYPE_LOADING
-            else -> when(items.[position].type)
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : RecyclerView.ViewHolder {
-        return when (viewType) {
-            VIEW_TYPE_ITEM -> {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemNoticeBinding.inflate(layoutInflater, parent, false)
-                NoticeViewHolder(binding)
-            }
-            else -> {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemLoadingBinding.inflate(layoutInflater, parent, false)
-                LoadingViewHolder(binding)
-            }
-        }
-    }
-
-    override fun getItemCount(): Int {
-        return items.size
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if(holder is NoticeViewHolder){
-            holder.bind(items[position])
-        }else{
-
-        }
-    }
-
-    fun setList(notice: MutableList<Content>) {
-        items.addAll(notice)
-        items.add(Content(" ", " ")) // progress bar 넣을 자리
-    }
-
-    fun deleteLoading(){
-        items.removeAt(items.lastIndex) // 로딩이 완료되면 프로그레스바를 지움
-    }
-}*/

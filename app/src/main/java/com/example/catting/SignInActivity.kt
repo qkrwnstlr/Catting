@@ -50,48 +50,19 @@ class SignInActivity : AppCompatActivity() {
                 val password = pwText.text.toString()
                 val cats = arrayListOf<CatProfile>()
 
-                //test
-                cats.add(CatProfile("1","1","1"))
-                cats.add(CatProfile("2","2","2"))
-                cats.add(CatProfile("3","3","3"))
-                cats.add(CatProfile("4","4","4"))
-                Log.d("SignInFragment",cats.toString())
-                val userInfo = UserInfo("user","user","user",cats)
-                val intent = Intent(this@SignInActivity, SignInActivity::class.java)
-                intent.putExtra("userInfo", userInfo)
-                setResult(RESULT_OK, intent)
-                finish()
-                //
-
-                /*auth.signInWithEmailAndPassword(email,password).addOnCompleteListener{
+                auth.signInWithEmailAndPassword(email,password).addOnCompleteListener{
                     if(it.isSuccessful){
                         Snackbar.make(toolbar,"환영합니다.",Snackbar.LENGTH_LONG).show()
-                        socket = SocketApplication.get()
-                        socket.connect()
+                        socket = MainActivity.getInstance()?.socket!!
                         val jsonObject = JSONObject()
                         jsonObject.put("email",email)
-                        /*socket.emit("sign in request", jsonObject)
-                        socket.on("sign in result", signInResult)*/
-
-                        // test
-                        val cats = arrayListOf<CatProfile>()
-                        cats.plus(CatProfile("1","1","1"))
-                        cats.plus(CatProfile("2","2","2"))
-                        cats.plus(CatProfile("3","3","3"))
-                        cats.plus(CatProfile("4","4","4"))
-                        Log.d("SignInFragment",cats.toString())
-                        val userInfo = UserInfo("user","user","user",cats)
-                        //
-
-                        val intent = Intent(this@SignInActivity, SignInActivity::class.java)
-                        intent.putExtra("userInfo", userInfo)
-                        setResult(RESULT_OK, intent)
-                        finish()
+                        socket.emit("sign in request", jsonObject)
+                        socket.on("sign in result", signInResult)
                     }
                     else{
                         Snackbar.make(toolbar,"아이디와 비밀번호를 다시 확인해주세요.",Snackbar.LENGTH_LONG).show()
                     }
-                }*/
+                }
             }
         }
     }

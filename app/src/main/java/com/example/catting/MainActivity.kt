@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val intent = Intent(this@MainActivity, SignInActivity::class.java)
-        signInResult.launch(intent)
+        //signInResult.launch(intent)
 
         with(binding) {
             Log.d("MainFragment","onCreate")

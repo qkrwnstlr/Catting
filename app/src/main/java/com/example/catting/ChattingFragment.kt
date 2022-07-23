@@ -39,7 +39,8 @@ class ChattingFragment : Fragment() {
             toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.setting_icon -> {
-                        mainActivity.openSettingActivity()
+                        mainActivity.openChattingActivity("1")
+                        //mainActivity.openSettingActivity()
                         true
                     }
                     else -> false

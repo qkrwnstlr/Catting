@@ -43,39 +43,88 @@
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="48dp"
+        android:background="@color/chatting_orange"
         android:orientation="horizontal"
         android:weightSum="15"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/optiontLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <ImageButton
-            android:id="@+id/imageButton"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.5"
-            android:background="@color/chatting_white"
-            android:contentDescription="option"
-            app:srcCompat="@drawable/ic_baseline_add_24" />
+            android:layout_weight="1.5">
+
+            <ImageButton
+                android:id="@+id/plusButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:contentDescription="option"
+                app:srcCompat="@drawable/ic_baseline_add_24" />
+
+            <ImageButton
+                android:id="@+id/minusButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:contentDescription="close"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/ic_baseline_close_24" />
+        </FrameLayout>
 
         <EditText
             android:id="@+id/inputText"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="12"
+            android:layout_weight="11.8"
             android:ems="10"
             android:hint="@string/chatting_hint"
             android:inputType="textPersonName" />
 
-        <ImageButton
-            android:id="@+id/imageButton2"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.5"
-            android:background="@color/chatting_white"
-            android:contentDescription="file"
-            app:srcCompat="@drawable/ic_baseline_folder_open_24" />
+            android:layout_weight="1.7">
+
+            <ImageButton
+                android:id="@+id/fileButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:contentDescription="file"
+                app:srcCompat="@drawable/ic_baseline_folder_open_24" />
+
+            <ImageButton
+                android:id="@+id/sendButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/chatting_orange"
+                android:contentDescription="send"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/ic_baseline_send_24" />
+
+        </FrameLayout>
 
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/optiontLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
