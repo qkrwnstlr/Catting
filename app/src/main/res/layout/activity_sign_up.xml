@@ -6,39 +6,52 @@
     android:layout_height="match_parent"
     tools:context=".SignUpActivity">
 
-    <TextView
-        android:id="@+id/titleText"
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
-        android:text="Sign Up"
-        android:textSize="48sp"
+        android:background="@color/main_white"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/bazzi"
+            android:text="@string/sign_in_title"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="15dp" />
+    </androidx.appcompat.widget.Toolbar>
 
     <EditText
         android:id="@+id/emailText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="140dp"
         android:ems="10"
+        android:fontFamily="@font/bazzi"
         android:hint="e-mail"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/titleText"
-        app:layout_constraintHorizontal_bias="0.515"
-        app:layout_constraintStart_toStartOf="@+id/titleText"
-        app:layout_constraintTop_toBottomOf="@+id/titleText" />
+        android:inputType="textEmailAddress"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <EditText
         android:id="@+id/pwText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="52dp"
         android:ems="10"
+        android:fontFamily="@font/bazzi"
         android:hint="passward"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/emailText"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/emailText"
@@ -46,12 +59,14 @@
 
     <EditText
         android:id="@+id/nameText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="52dp"
         android:ems="10"
+        android:fontFamily="@font/bazzi"
         android:hint="name"
         android:inputType="textPersonName"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/emailText"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/emailText"
@@ -59,11 +74,13 @@
 
     <Button
         android:id="@+id/signUpButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
+        android:fontFamily="@font/bazzi"
         android:text="sign Up"
         android:textAllCaps="false"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/emailText"
         app:layout_constraintStart_toStartOf="@+id/emailText"
         app:layout_constraintTop_toBottomOf="@+id/nameText" />

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "170499235984",
+    "project_id": "catting-1f1b2",
+    "storage_bucket": "catting-1f1b2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:170499235984:android:dfd89ffaff27324821f815",
+        "android_client_info": {
+          "package_name": "com.example.catting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "170499235984-sqistgio6uijjbsh0gp6anp2l97vhuff.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.catting",
+            "certificate_hash": "2ea63721d1caa19835c28b950bd641da6968199d"
+          }
+        },
+        {
+          "client_id": "170499235984-siko7nugi4v5mif3jbubq3vo9itfuphi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_WpQCuTUiT7tUq2oWva-6ToGNfibibdk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "170499235984-siko7nugi4v5mif3jbubq3vo9itfuphi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

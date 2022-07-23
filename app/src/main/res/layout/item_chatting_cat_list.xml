@@ -15,6 +15,7 @@
         tools:srcCompat="@drawable/ic_baseline_person_24" />
 
     <LinearLayout
+        android:id="@+id/chattingInfo"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

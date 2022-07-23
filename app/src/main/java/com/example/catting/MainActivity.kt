@@ -3,6 +3,7 @@ package com.example.catting
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -18,8 +19,21 @@ class MainActivity : AppCompatActivity() {
     val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     lateinit var socket: Socket
     lateinit var signInResult :ActivityResultLauncher<Intent>
-    lateinit var userInfo: UserInfo
+    var userInfo: UserInfo = UserInfo(null,null,null, arrayListOf())
     var mBackWait:Long = 0
+
+    init{
+        instance = this
+    }
+
+    companion object{
+        private var instance:MainActivity? = null
+        fun getInstance(): MainActivity? {
+            return instance
+        }
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -30,6 +44,8 @@ class MainActivity : AppCompatActivity() {
             if(it.resultCode == RESULT_OK) {
                 val data: Intent? = it.data
                 userInfo = data?.getParcelableExtra<UserInfo>("userInfo")!!
+                //Log.d("MainFragment", data.getParcelableExtra<UserInfo>("userInfo").toString())
+                Log.d("MainFragment","${userInfo.cats}")
             }
         }
 
@@ -37,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         signInResult.launch(intent)
 
         with(binding) {
+            Log.d("MainFragment","onCreate")
             // 1. 페이지 데이터를 로드
             val fragmentList =
                 listOf<Fragment>(ChattingFragment(), UserInfoFragment(), FileFragment())
@@ -91,8 +108,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun openChattingActivity(){
+    fun openChattingActivity(cid:String){
         val intent = Intent(this@MainActivity, ChattingActivity::class.java)
+        intent.putExtra("cid",cid)
         startActivity(intent)
     }
 

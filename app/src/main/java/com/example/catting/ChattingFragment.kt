@@ -39,8 +39,7 @@ class ChattingFragment : Fragment() {
             toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.setting_icon -> {
-//                        mainActivity.openSettingActivity()
-                        mainActivity.openChattingActivity()
+                        mainActivity.openSettingActivity()
                         true
                     }
                     else -> false
@@ -50,14 +49,15 @@ class ChattingFragment : Fragment() {
     }
 
     override fun onResume() {
+        Log.d("ChattingFragment","onResume")
         super.onResume()
         // 프래그먼트 재시작
         catList = mainActivity.userInfo.cats
+        Log.d("ChattingFragment","$catList")
         binding.chattingRecycler.layoutManager = LinearLayoutManager(mainActivity,LinearLayoutManager.VERTICAL,false)
         binding.chattingRecycler.adapter = CatAdapter(catList)
         /*mainActivity.socket.emit("GetCatInfo","")
         mainActivity.socket.on("GetCatInfo",onGetCatInfo)*/
-        Log.d("ChattingFragment","onResume")
     }
 
     override fun onPause() {
@@ -65,20 +65,6 @@ class ChattingFragment : Fragment() {
         // 프래그먼트 전환
         Log.d("ChattingFragment","onPause")
     }
-
-    /*var onGetCatInfo = Emitter.Listener { args ->
-        val obj = JSONObject(args[0].toString())
-        var text: String
-        Thread(object : Runnable{
-            override fun run() {
-                mainActivity.runOnUiThread(Runnable {
-                    kotlin.run {
-                        text = "" + obj.get("cName") + ": " + obj.get("message")
-                    }
-                })
-            }
-        }).start()
-    }*/
 }
 
 class CatAdapter(val listData: ArrayList<CatProfile>) : RecyclerView.Adapter<CatAdapter.Holder>(){
@@ -86,6 +72,9 @@ class CatAdapter(val listData: ArrayList<CatProfile>) : RecyclerView.Adapter<Cat
         fun setCatProfile(catProfile:CatProfile){
             with(binding){
                 cName.text = catProfile.cName
+                chattingInfo.setOnClickListener {
+                    MainActivity.getInstance()?.openSettingActivity()
+                }
                 // 다른거도 세팅해주기
             }
         }
@@ -97,6 +86,7 @@ class CatAdapter(val listData: ArrayList<CatProfile>) : RecyclerView.Adapter<Cat
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
+        Log.d("ChattingFragment", "${listData[position]}")
         val catProfile = listData[position]
         holder.setCatProfile(catProfile)
     }
