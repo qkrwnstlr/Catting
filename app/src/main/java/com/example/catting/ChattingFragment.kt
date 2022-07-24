@@ -1,7 +1,9 @@
 package com.example.catting
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -39,7 +41,7 @@ class ChattingFragment : Fragment() {
             toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.setting_icon -> {
-                        mainActivity.openChattingActivity("1")
+                        mainActivity.openSettingActivity()
                         //mainActivity.openSettingActivity()
                         true
                     }
@@ -71,12 +73,15 @@ class ChattingFragment : Fragment() {
 class CatAdapter(val listData: ArrayList<CatProfile>) : RecyclerView.Adapter<CatAdapter.Holder>(){
     class Holder(val binding: ItemChattingCatListBinding): RecyclerView.ViewHolder(binding.root){
         fun setCatProfile(catProfile:CatProfile){
+            val decodedString = Base64.decode(catProfile.cPicture, Base64.DEFAULT)
+            val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
             with(binding){
                 cName.text = catProfile.cName
                 chattingInfo.setOnClickListener {
-                    MainActivity.getInstance()?.openSettingActivity()
+                    MainActivity.getInstance()?.openChattingActivity(catProfile)
                 }
-                // 다른거도 세팅해주기
+                cImage.setImageBitmap(decodedByte)
+                lastChat.text = ""
             }
         }
     }

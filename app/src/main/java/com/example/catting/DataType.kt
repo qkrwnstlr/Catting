@@ -3,8 +3,17 @@ package com.example.catting
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
+import com.google.gson.annotations.SerializedName
 
-class UserInfo(val uid: String?, val nickName: String?, val camID: String?, val cats:ArrayList<CatProfile>) :
+data class UserInfo(
+    @SerializedName("uid")
+    val uid: String?,
+    @SerializedName("nickName")
+    val nickName: String?,
+    @SerializedName("camID")
+    val camID: String?,
+    @SerializedName("cats")
+    val cats:ArrayList<CatProfile>) :
     Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -37,9 +46,15 @@ class UserInfo(val uid: String?, val nickName: String?, val camID: String?, val 
     }
 }
 
-data class CatProfile(val cid: String?, val cName: String?, val cPicture: String?): Parcelable {
+data class CatProfile(
+    @SerializedName("cid")
+    val cid: Int?,
+    @SerializedName("cName")
+    val cName: String?,
+    @SerializedName("cPicture")
+    val cPicture: String?): Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readString(),
+        parcel.readInt(),
         parcel.readString(),
         parcel.readString()
     ) {
@@ -50,7 +65,7 @@ data class CatProfile(val cid: String?, val cName: String?, val cPicture: String
     }
 
     override fun writeToParcel(dest: Parcel?, flags: Int) {
-        dest?.writeString(cid)
+        dest?.writeInt(cid!!)
         dest?.writeString(cName)
         dest?.writeString(cPicture)
     }
@@ -66,4 +81,32 @@ data class CatProfile(val cid: String?, val cName: String?, val cPicture: String
     }
 }
 
-data class CatInfo(val cid: String, val cName: String, val bread: String, val birthday: String, val gender: String, val cPicture: String, val bio: String)
+data class CatInfo(
+    @SerializedName("cid")
+    val cid: Int,
+    @SerializedName("cName")
+    val cName: String,
+    @SerializedName("bread")
+    val bread: String,
+    @SerializedName("birthday")
+    val birthday: String,
+    @SerializedName("gender")
+    val gender: String,
+    @SerializedName("cPicture")
+    val cPicture: String,
+    @SerializedName("bio")
+    val bio: String)
+
+
+data class  MessageLog(
+    @SerializedName("uid")
+    val uid: String?,
+    @SerializedName("cat_id")
+    val cid: Int?,
+    @SerializedName("userMessage")
+    val userMessage:String?,
+    @SerializedName("catAnswer")
+    val catAnswer:String?,
+    @SerializedName("catImg")
+    val image:String?
+)
