@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_gravity="right"
     android:background="@android:color/transparent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="3dp">
 
     <TextView
         android:id="@+id/message"
@@ -13,5 +15,10 @@
         android:layout_height="match_parent"
         android:layout_gravity="right"
         android:layout_weight="1"
-        android:text="TextView" />
+        android:background="@drawable/bg_user_chatting_bubble"
+        android:fontFamily="@font/bazzi"
+        android:maxLength="20"
+        android:padding="5dp"
+        android:text="TextView"
+        android:textSize="24sp" />
 </LinearLayout>

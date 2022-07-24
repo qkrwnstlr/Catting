@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@color/chatting_white"
+            android:background="@android:color/transparent"
             android:fontFamily="@font/bazzi"
             android:text="@string/chatting_title"
             android:textSize="24sp"
@@ -34,6 +34,7 @@
         android:id="@+id/chattingRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +44,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:background="@color/chatting_orange"
+        android:background="@color/chatting_brown"
         android:orientation="horizontal"
         android:weightSum="15"
         app:layout_constraintBottom_toTopOf="@+id/optiontLayout"
@@ -79,6 +80,7 @@
             android:layout_height="match_parent"
             android:layout_weight="11.8"
             android:ems="10"
+            android:fontFamily="@font/bazzi"
             android:hint="@string/chatting_hint"
             android:inputType="textPersonName" />
 

@@ -4,7 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_gravity="left"
+    android:background="@android:color/transparent"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    android:padding="3dp">
 
     <TextView
         android:id="@+id/cName"
@@ -12,7 +16,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_weight="1"
-        android:text="TextView" />
+        android:background="@color/chatting_white"
+        android:fontFamily="@font/bazzi"
+        android:maxLength="20"
+        android:padding="5dp"
+        android:text="TextView"
+        android:textSize="24sp" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -20,6 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_weight="1"
+        android:background="@drawable/bg_cat_chatting_bubble"
+        android:padding="5dp"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -28,5 +39,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_weight="1"
-        android:text="TextView" />
+        android:background="@drawable/bg_cat_chatting_bubble"
+        android:fontFamily="@font/bazzi"
+        android:maxLength="20"
+        android:padding="5dp"
+        android:text="TextView"
+        android:textSize="24sp" />
 </LinearLayout>
