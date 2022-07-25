@@ -47,9 +47,25 @@
         android:textColor="@color/main_black"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <Button
+        android:id="@+id/signInButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/bg_button"
+        android:fontFamily="@font/bazzi"
+        android:text="sign In"
+        android:textAllCaps="false"
+        android:textColor="@color/main_black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/emailText"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/emailText"
+        app:layout_constraintTop_toBottomOf="@+id/pwText" />
 
     <EditText
         android:id="@+id/pwText"
@@ -68,22 +84,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/emailText"
         app:layout_constraintTop_toBottomOf="@+id/emailText" />
-
-    <Button
-        android:id="@+id/signInButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:background="@drawable/bg_button"
-        android:fontFamily="@font/bazzi"
-        android:text="sign In"
-        android:textAllCaps="false"
-        android:textColor="@color/main_black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/emailText"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="@+id/emailText"
-        app:layout_constraintTop_toBottomOf="@+id/pwText" />
 
     <TextView
         android:id="@+id/signUpText"

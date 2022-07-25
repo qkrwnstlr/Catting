@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     //lateinit var socket: Socket
     lateinit var signInResult :ActivityResultLauncher<Intent>
+    lateinit var catInfoResult :ActivityResultLauncher<Intent>
     lateinit var api: RetrofitApplication
 
     var userInfo: UserInfo = UserInfo(null,null,null, arrayListOf())
@@ -130,6 +131,24 @@ class MainActivity : AppCompatActivity() {
     fun openSettingActivity(){
         val intent = Intent(this@MainActivity, SettingActivity::class.java)
         startActivity(intent)
+    }
+
+    fun openCatInfoActivity(catInfo: CatInfo?, index: Int, catInfoAdapter: CatInfoAdapter){
+        catInfoResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            if(it.resultCode == RESULT_OK){
+                val data: Intent? = it.data
+                val result = data?.getParcelableExtra<CatInfo>("catInfo")!!
+                if(index == -1){
+                    catInfoAdapter.addItem(result)
+                } else {
+                    catInfoAdapter.editItem(index, result)
+                }
+            }
+        }
+        val intent = Intent(this@MainActivity, CatInfoActivity::class.java)
+        intent.putExtra("catInfo", catInfo)
+        intent.putExtra("index", index)
+        catInfoResult.launch(intent)
     }
 }
 

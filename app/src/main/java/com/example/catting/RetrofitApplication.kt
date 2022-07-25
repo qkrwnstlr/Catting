@@ -14,8 +14,14 @@ interface RetrofitApplication {
     @POST("/user/{uid}}")
     fun getUserInfo(@Field("uid") uid: String): Call<UserInfo>
 
+    @POST("/user/{uid}}")
+    fun getCatsInfo(@Field("uid") uid: String): Call<ArrayList<CatInfo>>
+
     @POST("/user")
     fun sendUserInfo(@Body userInfo: UserInfo): Call<UserInfo>
+
+    @POST("/user")
+    fun sendCatsInfo(@Body catsInfo: ArrayList<CatInfo>): Call<UserInfo>
 
     @POST("/")
     fun sendMessage(@Body messageLog: MessageLog): Call<MessageLog>

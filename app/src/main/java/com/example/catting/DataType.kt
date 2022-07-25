@@ -13,7 +13,7 @@ data class UserInfo(
     @SerializedName("camID")
     val camID: String?,
     @SerializedName("cats")
-    val cats:ArrayList<CatProfile>) :
+    var cats:ArrayList<CatProfile>) :
     Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -83,19 +83,54 @@ data class CatProfile(
 
 data class CatInfo(
     @SerializedName("cid")
-    val cid: Int,
+    val cid: Int?,
     @SerializedName("cName")
-    val cName: String,
+    val cName: String?,
     @SerializedName("bread")
-    val bread: String,
+    val bread: String?,
     @SerializedName("birthday")
-    val birthday: String,
+    val birthday: String?,
     @SerializedName("gender")
-    val gender: String,
+    val gender: String?,
     @SerializedName("cPicture")
-    val cPicture: String,
+    val cPicture: String?,
     @SerializedName("bio")
-    val bio: String)
+    val bio: String?) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString()
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(cid!!)
+        parcel.writeString(cName)
+        parcel.writeString(bread)
+        parcel.writeString(birthday)
+        parcel.writeString(gender)
+        parcel.writeString(cPicture)
+        parcel.writeString(bio)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<CatInfo> {
+        override fun createFromParcel(parcel: Parcel): CatInfo {
+            return CatInfo(parcel)
+        }
+
+        override fun newArray(size: Int): Array<CatInfo?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
 
 
 data class  MessageLog(

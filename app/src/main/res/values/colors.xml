@@ -19,5 +19,5 @@
     <color name="chatting_orange">#FFF0A500</color>
     <color name="chatting_brown">#FFCF7500</color>
     <color name="chatting_black">#FF1A1C20</color>
-    <color name="blue_link_text">#FF0000FF</color>
+    <color name="chatting_yellow">#FFEEC373</color>
 </resources>

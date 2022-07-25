@@ -81,6 +81,7 @@ class CatAdapter(val listData: ArrayList<CatProfile>) : RecyclerView.Adapter<Cat
                     MainActivity.getInstance()?.openChattingActivity(catProfile)
                 }
                 cImage.setImageBitmap(decodedByte)
+                cImage.clipToOutline = true
                 lastChat.text = ""
             }
         }

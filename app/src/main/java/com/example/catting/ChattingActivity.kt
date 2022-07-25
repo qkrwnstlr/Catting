@@ -1,6 +1,7 @@
 package com.example.catting
 
 import android.graphics.BitmapFactory
+import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Message
@@ -8,9 +9,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,9 +29,26 @@ class ChattingActivity : AppCompatActivity() {
     lateinit var userInfo: UserInfo
     lateinit var catProfile: CatProfile
     lateinit var imm : InputMethodManager
+    lateinit var keyboardRect : Rect
+    private val actionBar get() = supportActionBar!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbar)
+        //Toolbar에 표시되는 제목의 표시 유무를 설정. false로 해야 custom한 툴바의 이름이 화면에 보인다.
+        actionBar.setDisplayShowTitleEnabled(false)
+        //왼쪽 버튼 사용설정(기본은 뒤로가기)
+        actionBar.setDisplayHomeAsUpEnabled(true)
+
+        val mRootWindow = window
+        val mRootView = mRootWindow.decorView.findViewById<View>(android.R.id.content)
+        mRootView.viewTreeObserver.addOnGlobalLayoutListener {
+            val rect = Rect()
+            val view = mRootWindow.decorView
+            view.getWindowVisibleDisplayFrame(rect)
+            keyboardRect = rect
+        }
 
         catProfile = intent.getParcelableExtra<CatProfile>("catProfile")!!
         userInfo = MainActivity.getInstance()?.userInfo!!
@@ -168,6 +184,24 @@ class ChattingActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d("NextFragment","onDestroy")
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.chatting_toolbar, menu)
+        return true
+    }
+
+    //item 버튼 클릭 했을 때
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                //뒤로가기 버튼 눌렀을 때
+                Log.d("ToolBar_item: ", "뒤로가기 버튼 클릭")
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 }
