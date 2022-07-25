@@ -34,7 +34,10 @@
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/bazzi"
             android:text="@string/main_file_title"
-            android:textSize="24sp" />
+            android:textColor="@color/main_black"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="15dp" />
     </androidx.appcompat.widget.Toolbar>
 
 

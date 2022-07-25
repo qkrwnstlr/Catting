@@ -25,6 +25,9 @@
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/bazzi"
             android:text="@string/setting_title"
-            android:textSize="24sp" />
+            android:textColor="@color/setting_black"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="15dp" />
     </androidx.appcompat.widget.Toolbar>
 </androidx.constraintlayout.widget.ConstraintLayout>

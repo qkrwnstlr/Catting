@@ -4,7 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2965" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/drawable/bg_button.xml" value="0.508" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/drawable/bg_cat_chatting_bubble.xml" value="0.2965" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/drawable/bg_edit_text.xml" value="0.508" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/drawable/bg_user_chatting_bubble.xml" value="0.2965" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.2965" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/drawable/ic_baseline_chat_bubble_24.xml" value="0.4185" />
@@ -23,7 +25,7 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/activity_setting.xml" value="0.5390625" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/activity_setting_activivy.xml" value="0.5536458333333333" />
-        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/activity_sign_in.xml" value="0.25" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/activity_sign_in.xml" value="0.5" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/fragment_chatting.xml" value="0.33" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Catting/app/src/main/res/layout/fragment_file.xml" value="0.5536458333333333" />
