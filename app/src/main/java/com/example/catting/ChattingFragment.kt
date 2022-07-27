@@ -19,7 +19,7 @@ import org.json.JSONObject
 class ChattingFragment : Fragment() {
     lateinit var binding: FragmentChattingBinding
     lateinit var mainActivity: MainActivity
-    lateinit var catList: ArrayList<CatProfile>
+    lateinit var catList: ArrayList<CatInfo>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -70,19 +70,19 @@ class ChattingFragment : Fragment() {
     }
 }
 
-class CatAdapter(val listData: ArrayList<CatProfile>) : RecyclerView.Adapter<CatAdapter.Holder>(){
+class CatAdapter(val listData: ArrayList<CatInfo>) : RecyclerView.Adapter<CatAdapter.Holder>(){
     class Holder(val binding: ItemChattingCatListBinding): RecyclerView.ViewHolder(binding.root){
-        fun setCatProfile(catProfile:CatProfile){
-            val decodedString = Base64.decode(catProfile.cPicture, Base64.DEFAULT)
+        fun setCatProfile(catInfo: CatInfo){
+            val decodedString = Base64.decode(catInfo.cPicture, Base64.DEFAULT)
             val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
             with(binding){
-                cName.text = catProfile.cName
+                cName.text = catInfo.cName
                 chattingInfo.setOnClickListener {
-                    MainActivity.getInstance()?.openChattingActivity(catProfile)
+                    MainActivity.getInstance()?.openChattingActivity(catInfo)
                 }
                 cImage.setImageBitmap(decodedByte)
                 cImage.clipToOutline = true
-                lastChat.text = ""
+                lastChat.text = catInfo.bio
             }
         }
     }

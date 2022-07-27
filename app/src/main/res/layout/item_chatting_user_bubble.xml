@@ -17,7 +17,7 @@
         android:layout_weight="1"
         android:background="@drawable/bg_user_chatting_bubble"
         android:fontFamily="@font/bazzi"
-        android:maxLength="20"
+        android:maxWidth="250dp"
         android:padding="5dp"
         android:text="TextView"
         android:textColor="@color/chatting_black"

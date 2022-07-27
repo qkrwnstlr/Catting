@@ -6,33 +6,37 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.catting.databinding.FragmentUserInfoBinding
-import com.example.catting.databinding.ItemChattingCatListBinding
 import com.example.catting.databinding.ItemUserInfoCatListBinding
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.reflect.Type
+
 
 class UserInfoFragment : Fragment() {
     lateinit var binding: FragmentUserInfoBinding
     lateinit var mainActivity: MainActivity
     lateinit var catInfoList: ArrayList<CatInfo>
     lateinit var catInfoAdapter: CatInfoAdapter
-    val api = mainActivity.api
-    val userInfo = mainActivity.userInfo
+    lateinit var api:RetrofitApplication
+    lateinit var userInfo: UserInfo
+    lateinit var catInfoResult: ActivityResultLauncher<Intent>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if(context is MainActivity) mainActivity = context
+        if(context is SignInActivity) mainActivity = MainActivity.getInstance()!!
     }
 
     override fun onCreateView(
@@ -45,6 +49,23 @@ class UserInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        api = mainActivity.api
+        userInfo = mainActivity.userInfo.copy()
+
+        catInfoResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            if(it.resultCode == AppCompatActivity.RESULT_OK){
+                val data: Intent? = it.data
+                val index = data?.getIntExtra("index", -2)
+                val result = data?.getParcelableExtra<CatInfo>("catInfo")!!
+                Log.d("UserInfoFragment","$index")
+                when(index){
+                    -2 -> { }
+                    -1 -> catInfoAdapter.addItem(result)
+                    else -> catInfoAdapter.editItem(index!!, result)
+                }
+            }
+        }
+
         with(binding){
             toolbar.inflateMenu(R.menu.main_toolbar)
             toolbar.setOnMenuItemClickListener {
@@ -57,26 +78,26 @@ class UserInfoFragment : Fragment() {
                 }
             }
             addCatButton.setOnClickListener {
-                mainActivity.openCatInfoActivity(null, -1, catInfoAdapter)
+                val intent = Intent(mainActivity, CatInfoActivity::class.java)
+                intent.putExtra("index", -1)
+                catInfoResult.launch(intent)
             }
             editUserInfoButton.setOnClickListener{
-                api.sendCatsInfo(catInfoAdapter.listData).enqueue(object: Callback<UserInfo>{
+                userInfo.nickName = nickName.text.toString()
+                userInfo.camID = camID.text.toString()
+                userInfo.cats = catInfoAdapter.listData
+
+                // test
+                mainActivity.userInfo = userInfo
+                mainActivity.binding.mainTab.selectTab(mainActivity.binding.mainTab.getTabAt(0))
+                //
+
+                api.sendUserInfo(userInfo).enqueue(object: Callback<UserInfo>{
                     override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
                         val body = response.body().toString()
                         if(body.isNotEmpty()){
-                            api.sendUserInfo(Gson().fromJson(body,UserInfo::class.java)).enqueue(object: Callback<UserInfo>{
-                                override fun onResponse(
-                                    call: Call<UserInfo>,
-                                    response: Response<UserInfo>
-                                ) {
-                                    TODO("Not yet implemented")
-                                }
-
-                                override fun onFailure(call: Call<UserInfo>, t: Throwable) {
-                                    TODO("Not yet implemented")
-                                }
-
-                            })
+                            mainActivity.userInfo = Gson().fromJson(body,UserInfo::class.java)
+                            mainActivity.binding.mainTab.selectTab(mainActivity.binding.mainTab.getTabAt(0))
                         }
                     }
 
@@ -84,8 +105,8 @@ class UserInfoFragment : Fragment() {
                         Log.d("UserInfoFragment",t.message.toString())
                         Log.d("UserInfoFragment","fail")
                     }
-                })
 
+                })
             }
         }
     }
@@ -93,29 +114,17 @@ class UserInfoFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         // 프래그먼트 재시작
-        api.getCatsInfo(userInfo.uid!!).enqueue(object: Callback<ArrayList<CatInfo>>{
-            override fun onResponse(
-                call: Call<ArrayList<CatInfo>>,
-                response: Response<ArrayList<CatInfo>>
-            ) {
-                val body = response.body().toString()
-                if(body.isNotEmpty()){
-                    val listType: TypeToken<ArrayList<CatInfo>> = object: TypeToken<ArrayList<CatInfo>>() {}
-                    catInfoList = Gson().fromJson(body,listType.type)
-                    catInfoAdapter = CatInfoAdapter(catInfoList)
-                    with(binding){
-                        catInfoRecycler.layoutManager = LinearLayoutManager(mainActivity,LinearLayoutManager.VERTICAL, false)
-                        catInfoRecycler.adapter = catInfoAdapter
-                    }
-                }
-            }
+        catInfoList = userInfo.cats
+        catInfoAdapter = CatInfoAdapter(catInfoList, catInfoResult)
+        with(binding){
+            nickName.setText(userInfo.nickName)
+            camID.setText(userInfo.camID)
+            catInfoRecycler.layoutManager = LinearLayoutManager(mainActivity,LinearLayoutManager.VERTICAL, false)
+            catInfoRecycler.adapter = catInfoAdapter
 
-            override fun onFailure(call: Call<ArrayList<CatInfo>>, t: Throwable) {
-                Log.d("UserInfoFragment",t.message.toString())
-                Log.d("UserInfoFragment","fail")
-            }
-
-        })
+            val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
+            itemTouchHelper.attachToRecyclerView(catInfoRecycler)
+        }
         Log.d("UserInfoFragment","onResume")
     }
 
@@ -124,9 +133,25 @@ class UserInfoFragment : Fragment() {
         // 프래그먼트 전환
         Log.d("UserInfoFragment","onPause")
     }
+
+    var simpleItemTouchCallback: ItemTouchHelper.SimpleCallback =
+        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                catInfoAdapter.removeItem(position)
+            }
+        }
 }
 
-class CatInfoAdapter(val listData: ArrayList<CatInfo>) : RecyclerView.Adapter<CatInfoAdapter.Holder>(){
+class CatInfoAdapter(val listData: ArrayList<CatInfo>, val catInfoResult: ActivityResultLauncher<Intent>) : RecyclerView.Adapter<CatInfoAdapter.Holder>(){
     inner class Holder(val binding: ItemUserInfoCatListBinding): RecyclerView.ViewHolder(binding.root){
         fun setCatProfile(catInfo: CatInfo, position: Int){
             val decodedString = Base64.decode(catInfo.cPicture, Base64.DEFAULT)
@@ -134,7 +159,10 @@ class CatInfoAdapter(val listData: ArrayList<CatInfo>) : RecyclerView.Adapter<Ca
             with(binding){
                 cName.text = catInfo.cName
                 catInformation.setOnClickListener {
-                    MainActivity.getInstance()?.openCatInfoActivity(catInfo, position,this@CatInfoAdapter)
+                    val intent = Intent(MainActivity.getInstance(),CatInfoActivity::class.java)
+                    intent.putExtra("index", position)
+                    intent.putExtra("catInfo", catInfo)
+                    catInfoResult.launch(intent)
                 }
                 cImage.setImageBitmap(decodedByte)
                 cImage.clipToOutline = true

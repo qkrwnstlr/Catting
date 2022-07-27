@@ -7,46 +7,83 @@
     android:layout_gravity="left"
     android:background="@android:color/transparent"
     android:clipToPadding="false"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="3dp">
 
-    <TextView
-        android:id="@+id/cName"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_weight="1"
-        android:background="@android:color/transparent"
-        android:fontFamily="@font/bazzi"
-        android:maxLength="20"
-        android:padding="5dp"
-        android:text="TextView"
-        android:textColor="@color/main_black"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent"
+        android:layout_marginRight="12dp"
+        android:layout_weight="1">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginBottom="5dp"
-        android:layout_weight="1"
-        android:background="@drawable/bg_cat_chatting_bubble"
-        android:padding="5dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="0dp">
 
-    <TextView
-        android:id="@+id/message"
+            <ImageView
+                android:id="@+id/catProfile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                tools:srcCompat="@tools:sample/avatars" />
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@drawable/bg_cat_chatting_bubble"
-        android:fontFamily="@font/bazzi"
-        android:maxLength="20"
-        android:padding="5dp"
-        android:text="TextView"
-        android:textColor="@color/main_black"
-        android:textSize="24sp" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/bazzi"
+            android:maxLength="20"
+            android:padding="5dp"
+            android:text="TextView"
+            android:textColor="@color/main_black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginBottom="12dp"
+            android:layout_weight="1"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                tools:srcCompat="@tools:sample/avatars" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginBottom="12dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_cat_chatting_bubble"
+            android:fontFamily="@font/bazzi"
+            android:maxWidth="250dp"
+            android:padding="5dp"
+            android:text="TextView"
+            android:textColor="@color/main_black"
+            android:textSize="24sp" />
+    </LinearLayout>
+
 </LinearLayout>

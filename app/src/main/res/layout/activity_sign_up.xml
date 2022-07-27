@@ -30,73 +30,89 @@
             tools:layout_editor_absoluteY="15dp" />
     </androidx.appcompat.widget.Toolbar>
 
-    <EditText
-        android:id="@+id/emailText"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="140dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/bg_edit_text"
-        android:ems="10"
-        android:fontFamily="@font/bazzi"
-        android:hint="e-mail"
-        android:inputType="textEmailAddress"
-        android:padding="10dp"
-        android:textColor="@color/main_black"
-        android:textSize="24sp"
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-    <EditText
-        android:id="@+id/pwText"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="52dp"
-        android:background="@drawable/bg_edit_text"
-        android:ems="10"
-        android:fontFamily="@font/bazzi"
-        android:hint="passward"
-        android:inputType="textPassword"
-        android:padding="10dp"
-        android:textColor="@color/main_black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/emailText"
-        app:layout_constraintStart_toStartOf="@+id/emailText"
-        app:layout_constraintTop_toBottomOf="@+id/emailText" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/nameText"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="52dp"
-        android:background="@drawable/bg_edit_text"
-        android:ems="10"
-        android:fontFamily="@font/bazzi"
-        android:hint="nick name"
-        android:inputType="textPersonName"
-        android:padding="10dp"
-        android:textColor="@color/main_black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/emailText"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/emailText"
-        app:layout_constraintTop_toBottomOf="@+id/pwText" />
+            <EditText
+                android:id="@+id/emailText"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="140dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_edit_text"
+                android:ems="10"
+                android:fontFamily="@font/bazzi"
+                android:hint="e-mail"
+                android:inputType="textEmailAddress"
+                android:padding="10dp"
+                android:textColor="@color/main_black"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/signUpButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:background="@drawable/bg_button"
-        android:fontFamily="@font/bazzi"
-        android:text="sign Up"
-        android:textAllCaps="false"
-        android:textColor="@color/main_black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/nameText"
-        app:layout_constraintStart_toStartOf="@+id/emailText"
-        app:layout_constraintTop_toBottomOf="@+id/nameText" />
+            <EditText
+                android:id="@+id/pwText"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="52dp"
+                android:background="@drawable/bg_edit_text"
+                android:ems="10"
+                android:fontFamily="@font/bazzi"
+                android:hint="passward"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:textColor="@color/main_black"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="@+id/emailText"
+                app:layout_constraintStart_toStartOf="@+id/emailText"
+                app:layout_constraintTop_toBottomOf="@+id/emailText" />
+
+            <EditText
+                android:id="@+id/password2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="52dp"
+                android:background="@drawable/bg_edit_text"
+                android:ems="10"
+                android:fontFamily="@font/bazzi"
+                android:hint="check password"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:textColor="@color/main_black"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="@+id/emailText"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/emailText"
+                app:layout_constraintTop_toBottomOf="@+id/pwText" />
+
+            <Button
+                android:id="@+id/signUpButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:background="@drawable/bg_button"
+                android:fontFamily="@font/bazzi"
+                android:text="sign Up"
+                android:textAllCaps="false"
+                android:textColor="@color/main_black"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="@+id/password2"
+                app:layout_constraintStart_toStartOf="@+id/emailText"
+                app:layout_constraintTop_toBottomOf="@+id/password2" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

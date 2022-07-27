@@ -7,5 +7,6 @@
     <string name="setting_title">Setting</string>
     <string name="sign_in_title">Welcome to Catting</string>
     <string name="chatting_title">Chatting</string>
+    <string name="cat_info_title">Cat Info</string>
     <string name="chatting_hint">input your message</string>
 </resources>

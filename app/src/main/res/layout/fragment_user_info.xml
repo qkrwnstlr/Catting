@@ -7,38 +7,6 @@
     android:background="@color/main_white"
     tools:context=".UserInfoFragment">
 
-    <Button
-        android:id="@+id/addCatButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="52dp"
-        android:background="@drawable/bg_button"
-        android:fontFamily="@font/bazzi"
-        android:text="Add Cat"
-        android:textAllCaps="false"
-        android:textColor="@color/main_black"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/editUserInfoButton"
-        app:layout_constraintEnd_toEndOf="@+id/nickName"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/nickName" />
-
-    <Button
-        android:id="@+id/editUserInfoButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="52dp"
-        android:background="@drawable/bg_button"
-        android:fontFamily="@font/bazzi"
-        android:text="Edit User Info"
-        android:textAllCaps="false"
-        android:textColor="@color/main_black"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/nickName"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/nickName" />
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -62,53 +30,104 @@
             tools:layout_editor_absoluteY="15dp" />
     </androidx.appcompat.widget.Toolbar>
 
-    <EditText
-        android:id="@+id/camID"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="52dp"
-        android:background="@drawable/bg_edit_text"
-        android:ems="10"
-        android:fontFamily="@font/bazzi"
-        android:hint="cam ID"
-        android:inputType="textEmailAddress"
-        android:padding="10dp"
-        android:textColor="@color/main_black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/nickName"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/nickName"
-        app:layout_constraintTop_toBottomOf="@+id/nickName" />
-
-    <EditText
-        android:id="@+id/nickName"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/bg_edit_text"
-        android:ems="10"
-        android:fontFamily="@font/bazzi"
-        android:hint="nick name"
-        android:inputType="textEmailAddress"
-        android:padding="10dp"
-        android:textColor="@color/main_black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/catInfoRecycler"
+    <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="52dp"
-        app:layout_constraintBottom_toTopOf="@+id/addCatButton"
-        app:layout_constraintEnd_toEndOf="@+id/nickName"
-        app:layout_constraintStart_toStartOf="@+id/nickName"
-        app:layout_constraintTop_toBottomOf="@+id/camID" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="1.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/nickName"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_edit_text"
+                android:ems="10"
+                android:fontFamily="@font/bazzi"
+                android:hint="nick name"
+                android:inputType="textEmailAddress"
+                android:padding="10dp"
+                android:textColor="@color/main_black"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/camID"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/bg_edit_text"
+                android:ems="10"
+                android:fontFamily="@font/bazzi"
+                android:hint="cam ID"
+                android:inputType="textEmailAddress"
+                android:padding="10dp"
+                android:textColor="@color/main_black"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="@+id/nickName"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/nickName"
+                app:layout_constraintTop_toBottomOf="@+id/nickName" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/catInfoRecycler"
+                android:layout_width="0dp"
+                android:layout_height="250dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/bg_edit_text"
+                android:padding="5dp"
+                app:layout_constraintBottom_toTopOf="@+id/addCatButton"
+                app:layout_constraintEnd_toEndOf="@+id/nickName"
+                app:layout_constraintStart_toStartOf="@+id/nickName"
+                app:layout_constraintTop_toBottomOf="@+id/camID" />
+
+            <Button
+                android:id="@+id/addCatButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/bg_button"
+                android:fontFamily="@font/bazzi"
+                android:text="Add Cat"
+                android:textAllCaps="false"
+                android:textColor="@color/main_black"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/editUserInfoButton"
+                app:layout_constraintEnd_toEndOf="@+id/nickName"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/nickName" />
+
+            <Button
+                android:id="@+id/editUserInfoButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/bg_button"
+                android:fontFamily="@font/bazzi"
+                android:text="Edit User Info"
+                android:textAllCaps="false"
+                android:textColor="@color/main_black"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/nickName"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/nickName" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

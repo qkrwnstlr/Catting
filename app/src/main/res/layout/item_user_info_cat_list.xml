@@ -115,7 +115,9 @@
             android:paddingBottom="0dp"
             android:text="TextView"
             android:textColor="@color/main_black"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:maxLines="1"
+            android:ellipsize="end"/>
 
     </LinearLayout>
 
