@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -56,8 +57,8 @@ class UserInfoFragment : Fragment() {
             if(it.resultCode == AppCompatActivity.RESULT_OK){
                 val data: Intent? = it.data
                 val index = data?.getIntExtra("index", -2)
-                val result = data?.getParcelableExtra<CatInfo>("catInfo")!!
-                Log.d("UserInfoFragment","$index")
+                val result = data?.getLargeExtra<CatInfo>("catInfo")!!
+                Log.d("UserInfoFragment","data?.getLargeExtra = ${result.cPicture!!.length}")
                 when(index){
                     -2 -> { }
                     -1 -> catInfoAdapter.addItem(result)
@@ -89,24 +90,42 @@ class UserInfoFragment : Fragment() {
 
                 // test
                 mainActivity.userInfo = userInfo
+                MainActivity.isUserInfoFragmentNeedRefresh = true
+                MainActivity.isChattingFragmentNeedRefresh = true
                 mainActivity.binding.mainTab.selectTab(mainActivity.binding.mainTab.getTabAt(0))
                 //
-
-                api.sendUserInfo(userInfo).enqueue(object: Callback<UserInfo>{
-                    override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
-                        val body = response.body().toString()
-                        if(body.isNotEmpty()){
-                            mainActivity.userInfo = Gson().fromJson(body,UserInfo::class.java)
-                            mainActivity.binding.mainTab.selectTab(mainActivity.binding.mainTab.getTabAt(0))
+                val dlg = ProgressBarDialog(mainActivity)
+                if(userInfo.nickName!!.isNotEmpty() && userInfo.camID!!.isNotEmpty()) {
+                    dlg.show()
+                    api.sendUserInfo(userInfo).enqueue(object : Callback<UserInfo> {
+                        override fun onResponse(
+                            call: Call<UserInfo>,
+                            response: Response<UserInfo>
+                        ) {
+                            val body = response.body().toString()
+                            if (body.isNotEmpty()) {
+                                mainActivity.userInfo = Gson().fromJson(body, UserInfo::class.java)
+                                MainActivity.isUserInfoFragmentNeedRefresh = true
+                                MainActivity.isChattingFragmentNeedRefresh = true
+                                mainActivity.binding.mainTab.selectTab(
+                                    mainActivity.binding.mainTab.getTabAt(
+                                        0
+                                    )
+                                )
+                            }
                         }
-                    }
 
-                    override fun onFailure(call: Call<UserInfo>, t: Throwable) {
-                        Log.d("UserInfoFragment",t.message.toString())
-                        Log.d("UserInfoFragment","fail")
-                    }
+                        override fun onFailure(call: Call<UserInfo>, t: Throwable) {
+                            Log.d("UserInfoFragment", t.message.toString())
+                            Log.d("UserInfoFragment", "fail")
+                            dlg.dismiss()
+                        }
 
-                })
+                    })
+                }
+                else{
+                    Toast.makeText(mainActivity, "모든 정보를 입력해주세요", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -114,16 +133,19 @@ class UserInfoFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         // 프래그먼트 재시작
-        catInfoList = userInfo.cats
-        catInfoAdapter = CatInfoAdapter(catInfoList, catInfoResult)
-        with(binding){
-            nickName.setText(userInfo.nickName)
-            camID.setText(userInfo.camID)
-            catInfoRecycler.layoutManager = LinearLayoutManager(mainActivity,LinearLayoutManager.VERTICAL, false)
-            catInfoRecycler.adapter = catInfoAdapter
+        if(MainActivity.isUserInfoFragmentNeedRefresh){
+            catInfoList = userInfo.cats
+            catInfoAdapter = CatInfoAdapter(catInfoList, catInfoResult)
+            with(binding){
+                nickName.setText(userInfo.nickName)
+                camID.setText(userInfo.camID)
+                catInfoRecycler.layoutManager = LinearLayoutManager(mainActivity,LinearLayoutManager.VERTICAL, false)
+                catInfoRecycler.adapter = catInfoAdapter
 
-            val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
-            itemTouchHelper.attachToRecyclerView(catInfoRecycler)
+                val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
+                itemTouchHelper.attachToRecyclerView(catInfoRecycler)
+            }
+            MainActivity.isUserInfoFragmentNeedRefresh = false
         }
         Log.d("UserInfoFragment","onResume")
     }
@@ -161,7 +183,7 @@ class CatInfoAdapter(val listData: ArrayList<CatInfo>, val catInfoResult: Activi
                 catInformation.setOnClickListener {
                     val intent = Intent(MainActivity.getInstance(),CatInfoActivity::class.java)
                     intent.putExtra("index", position)
-                    intent.putExtra("catInfo", catInfo)
+                    intent.putLargeExtra("catInfo", catInfo)
                     catInfoResult.launch(intent)
                 }
                 cImage.setImageBitmap(decodedByte)
@@ -180,7 +202,7 @@ class CatInfoAdapter(val listData: ArrayList<CatInfo>, val catInfoResult: Activi
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        Log.d("ChattingFragment", "${listData[position]}")
+        Log.d("ChattingFragment", "${listData[position].cPicture!!.length}")
         val catInfo = listData[position]
         holder.setCatProfile(catInfo, position)
     }

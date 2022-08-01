@@ -66,7 +66,7 @@ class ChattingActivity : AppCompatActivity() {
             keyboardRect = rect
         }
 
-        catInfo = intent.getParcelableExtra<CatInfo>("catInfo")!!
+        catInfo = intent.getLargeExtra<CatInfo>("catInfo")!!
         userInfo = MainActivity.getInstance()?.userInfo!!
         imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager
 

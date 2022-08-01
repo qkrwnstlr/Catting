@@ -1,6 +1,7 @@
 package com.example.catting
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -13,17 +14,20 @@ import android.util.Base64
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.catting.databinding.ActivityCatInfoBinding
 import java.io.ByteArrayOutputStream
+import java.io.FileNotFoundException
 
 class CatInfoActivity : BaseActivity() {
     lateinit var cameraResult: ActivityResultLauncher<Intent>
     lateinit var galleryResult: ActivityResultLauncher<Intent>
     lateinit var catInfo: CatInfo
     lateinit var cPicture: Bitmap
+
     var index = -2
 
     val PERM_STORAGE = 9
@@ -45,14 +49,16 @@ class CatInfoActivity : BaseActivity() {
 
         index = intent.getIntExtra("index", -2)
         if(intent.hasExtra("catInfo")){
-            catInfo = intent.getParcelableExtra<CatInfo>("catInfo")!!
+            catInfo = intent.getLargeExtra<CatInfo>("catInfo")!!
             with(binding){
                 cName.setText(catInfo.cName)
                 bread.setText(catInfo.bread)
                 birthday.setText(catInfo.birthday)
                 gender.setText(catInfo.gender)
                 bio.setText(catInfo.bio)
+
                 val decodeString = Base64.decode(catInfo.cPicture, Base64.DEFAULT)
+
                 val decodedByte = BitmapFactory.decodeByteArray(decodeString, 0, decodeString.size)
                 cPicture = decodedByte
                 imagePreview.setImageBitmap(decodedByte)
@@ -80,23 +86,39 @@ class CatInfoActivity : BaseActivity() {
             if(it.resultCode == RESULT_OK){
                 val data: Intent? = it.data
                 var uri : Uri? = data?.data
-                if(Build.VERSION.SDK_INT < 28) {
-                    cPicture = MediaStore.Images.Media.getBitmap(
+                cPicture = if(Build.VERSION.SDK_INT < 28) {
+                    MediaStore.Images.Media.getBitmap(
                         this.contentResolver,
                         uri
                     )
                 } else {
-                    val source = ImageDecoder.createSource(this.contentResolver, uri!!)
-                    cPicture = ImageDecoder.decodeBitmap(source)
+                    getResizeBitmap(this@CatInfoActivity, uri!!, 160)
                 }
                 binding.imagePreview.setImageBitmap(cPicture)
-                Log.d("CatInfoActivity","$cPicture")
             }
         }
 
-
         // 1. 공용저장소 권한이 있는지 확인
         requirePermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), PERM_STORAGE)
+    }
+
+    fun getResizeBitmap(context: Context,uri: Uri,resize: Int): Bitmap{
+        val resizeBitmap:Bitmap
+        val options = BitmapFactory.Options()
+        BitmapFactory.decodeStream(context.contentResolver.openInputStream(uri), null, options)
+        var width = options.outWidth
+        var height = options.outHeight
+        var sampleSize = 1
+        while (true) {//2번
+            if (width / 2 < resize || height / 2 < resize)
+                break;
+            width /= 2;
+            height /= 2;
+            sampleSize *= 2;
+        }
+        options.inSampleSize = sampleSize;
+        resizeBitmap = BitmapFactory.decodeStream(context.contentResolver.openInputStream(uri), null, options)!!
+        return resizeBitmap
     }
 
     fun setViews(){
@@ -123,7 +145,8 @@ class CatInfoActivity : BaseActivity() {
                     Toast.makeText(this@CatInfoActivity, "값을 모두 입력해주세요", Toast.LENGTH_SHORT).show()
                 }
                 else {
-                    val intent = Intent(this@CatInfoActivity, MainActivity::class.java)
+                    val dlg = ProgressBarDialog(this@CatInfoActivity)
+                    dlg.show()
                     catInfo.cName = cName.text.toString()
                     catInfo.bread = bread.text.toString()
                     catInfo.birthday = birthday.text.toString()
@@ -132,9 +155,14 @@ class CatInfoActivity : BaseActivity() {
                     val stream = ByteArrayOutputStream()
                     cPicture.compress(Bitmap.CompressFormat.PNG, 100, stream)
                     catInfo.cPicture = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT)
-                    intent.putExtra("catInfo", catInfo)
-                    intent.putExtra("index", index)
+                    val intent = Intent(this@CatInfoActivity, MainActivity::class.java).apply {
+                        putExtra("index", index)
+                        putLargeExtra("catInfo", catInfo)
+                    }
+//                    intent.putExtra("catInfo", catInfo)
+//                    intent.putExtra("index", index)
                     setResult(RESULT_OK, intent)
+                    dlg.dismiss()
                     finish()
                 }
             }

@@ -1,5 +1,6 @@
 package com.example.catting
 
+import android.Manifest
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -33,6 +34,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object{
         private var instance:MainActivity? = null
+        var isChattingFragmentNeedRefresh = true
+        var isUserInfoFragmentNeedRefresh = true
         fun getInstance(): MainActivity? {
             return instance
         }
@@ -81,22 +84,22 @@ class MainActivity : AppCompatActivity() {
             // 2. 어댑터 생성
             val mainPagerAdapter = MainFragmentPagerAdapter(fragmentList, this@MainActivity)
             // 3. 어댑터와 뷰 페이저 연결
-            veiwPager.adapter = mainPagerAdapter
+            viewPager.adapter = mainPagerAdapter
             // 4. 탭 메뉴 생성
             val mainFragmentName = listOf(R.drawable.ic_baseline_chat_bubble_24,
                 R.drawable.ic_baseline_person_outline_24, R.drawable.ic_baseline_folder_open_24)
             // 5. 탭 레이아웃과 뷰 페이저 연결
-            TabLayoutMediator(mainTab, veiwPager){ tab, position->
+            TabLayoutMediator(mainTab, viewPager){ tab, position->
                 tab.setIcon(mainFragmentName[position])
             }.attach()
 
             // 뷰 페이저 스와이프 막기
-            veiwPager.isUserInputEnabled = false
+            viewPager.isUserInputEnabled = false
             // 탭 레이아웃 선택시 수행 동작 설정
             mainTab.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     // 뷰 페이저 화면 전환 애니메이션 제거
-                    tab?.position?.let{veiwPager.setCurrentItem(it, false)}
+                    tab?.position?.let{viewPager.setCurrentItem(it, false)}
                     when(tab!!.position){
                         0->tab.setIcon(R.drawable.ic_baseline_chat_bubble_24)
                         1->tab.setIcon(R.drawable.ic_baseline_person_24)
@@ -123,15 +126,16 @@ class MainActivity : AppCompatActivity() {
         // 뒤로가기 버튼 클릭
         if(System.currentTimeMillis() - mBackWait >=2000 ) {
             mBackWait = System.currentTimeMillis()
-            Snackbar.make(binding.veiwPager,"뒤로가기 버튼을 한번 더 누르면 종료됩니다.",Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.viewPager,"뒤로가기 버튼을 한번 더 누르면 종료됩니다.",Snackbar.LENGTH_LONG).show()
         } else {
             finish() //액티비티 종료
         }
     }
 
     fun openChattingActivity(catInfo: CatInfo) {
-        val intent = Intent(this@MainActivity, ChattingActivity::class.java)
-        intent.putExtra("catInfo",catInfo)
+        val intent = Intent(this@MainActivity, ChattingActivity::class.java).apply {
+            putLargeExtra("catInfo",catInfo)
+        }
         startActivity(intent)
     }
 

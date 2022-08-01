@@ -55,10 +55,13 @@ class ChattingFragment : Fragment() {
         Log.d("ChattingFragment","onResume")
         super.onResume()
         // 프래그먼트 재시작
-        catList = mainActivity.userInfo.cats
-        Log.d("ChattingFragment","$catList")
-        binding.chattingRecycler.layoutManager = LinearLayoutManager(mainActivity,LinearLayoutManager.VERTICAL,false)
-        binding.chattingRecycler.adapter = CatAdapter(catList)
+        if(MainActivity.isChattingFragmentNeedRefresh){
+            catList = mainActivity.userInfo.cats
+            Log.d("ChattingFragment","$catList")
+            binding.chattingRecycler.layoutManager = LinearLayoutManager(mainActivity,LinearLayoutManager.VERTICAL,false)
+            binding.chattingRecycler.adapter = CatAdapter(catList)
+            MainActivity.isChattingFragmentNeedRefresh = false
+        }
         /*mainActivity.socket.emit("GetCatInfo","")
         mainActivity.socket.on("GetCatInfo",onGetCatInfo)*/
     }

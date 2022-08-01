@@ -172,7 +172,7 @@ class SignInInfo(){
 
 @Dao
 interface SignInInfoDao{
-    @Query("select * from sign_in_info")
+    @Query("select * from sign_in_info where `no` = 1")
     fun getSignInInfo(): List<SignInInfo>
 
     @Insert(onConflict = REPLACE)
