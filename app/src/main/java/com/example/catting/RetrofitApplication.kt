@@ -7,13 +7,28 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 interface RetrofitApplication {
-    @POST("/user/{uid}")
-    fun getUserInfo(@Path("uid") uid: String): Call<UserInfo>
+    @POST("/getUser")
+    fun getUserInfo(@Body uid: String): Call<UserInfo>
 
-    @POST("/user")
-    fun sendUserInfo(@Body userInfo: UserInfo): Call<UserInfo>
+    @POST("/addUser")
+    fun addUserInfo(@Body userInfo: UserInfo): Call<UserProfile>
 
-    @POST("/user")
+    @POST("/updateUser")
+    fun updateUserInfo(@Body userInfo: UserInfo): Call<UserProfile>
+
+    @POST("/getCat")
+    fun getCatInfo(@Body relation: Relation): Call<CatInfo>
+
+    @POST("/addCat")
+    fun addCatInfo(@Body catInfo: CatInfo): Call<CatProfile>
+
+    @POST("/updateCat")
+    fun updateCatInfo(@Body catInfo: CatInfo): Call<CatProfile>
+
+    @POST("/deleteCat")
+    fun deleteCatInfo(@Body relation: Relation): Call<Relation>
+
+    @POST("/message")
     fun sendMessage(@Body chattingLog: ChattingLog): Call<ChattingLog>
 
     companion object {

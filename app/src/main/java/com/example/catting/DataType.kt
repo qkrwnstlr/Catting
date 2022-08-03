@@ -8,6 +8,46 @@ import androidx.room.OnConflictStrategy.REPLACE
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 
+data class UserProfile(
+    @SerializedName("uid")
+    val uid: String?,
+    @SerializedName("nickName")
+    var nickName: String?,
+    @SerializedName("camID")
+    var camID: String?
+):Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString()
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(uid)
+        parcel.writeString(nickName)
+        parcel.writeString(camID)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    fun copy(): UserProfile{
+        return Gson().fromJson(Gson().toJson(this), this::class.java)
+    }
+
+    companion object CREATOR : Parcelable.Creator<UserProfile> {
+        override fun createFromParcel(parcel: Parcel): UserProfile {
+            return UserProfile(parcel)
+        }
+
+        override fun newArray(size: Int): Array<UserProfile?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
 data class  UserInfo(
     @SerializedName("uid")
     val uid: String?,
@@ -16,22 +56,22 @@ data class  UserInfo(
     @SerializedName("camID")
     var camID: String?,
     @SerializedName("cats")
-    var cats:ArrayList<CatInfo>) :
+    var cats:ArrayList<CatProfile>) :
     Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.createTypedArrayList(CatInfo.CREATOR) as ArrayList<CatInfo>
-    ) {
-        Log.d("DataTypeFragment","${this.cats}")
-    }
+        parcel.createTypedArrayList(CatProfile.CREATOR) as ArrayList<CatProfile>
+    )
+    constructor(userProfile: UserProfile, cats: ArrayList<CatProfile> = arrayListOf<CatProfile>())
+            : this(userProfile.uid, userProfile.nickName, userProfile.camID, cats)
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(uid)
         parcel.writeString(nickName)
         parcel.writeString(camID)
-        parcel.writeTypedList(cats as List<CatInfo>)
+        parcel.writeTypedList(cats as List<CatProfile>)
     }
 
     override fun describeContents(): Int {
@@ -54,12 +94,14 @@ data class  UserInfo(
 }
 
 data class CatInfo(
+    @SerializedName("uid")
+    var uid: String?,
     @SerializedName("cid")
     var cid: Int?,
     @SerializedName("cName")
     var cName: String?,
-    @SerializedName("bread")
-    var bread: String?,
+    @SerializedName("breed")
+    var breed: String?,
     @SerializedName("birthday")
     var birthday: String?,
     @SerializedName("gender")
@@ -69,7 +111,8 @@ data class CatInfo(
     @SerializedName("bio")
     var bio: String?) : Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readInt(),
+        parcel.readString(),
+        parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -80,9 +123,10 @@ data class CatInfo(
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(cid!!)
+        parcel.writeString(uid)
+        parcel.writeValue(cid)
         parcel.writeString(cName)
-        parcel.writeString(bread)
+        parcel.writeString(breed)
         parcel.writeString(birthday)
         parcel.writeString(gender)
         parcel.writeString(cPicture)
@@ -107,6 +151,57 @@ data class CatInfo(
         }
     }
 }
+
+data class CatProfile(
+    @SerializedName("uid")
+    var uid: String?,
+    @SerializedName("cid")
+    var cid: Int?,
+    @SerializedName("cName")
+    var cName: String?,
+    @SerializedName("cPicture")
+    var cPicture: String?
+):Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString(),
+        parcel.readString()
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(uid)
+        parcel.writeValue(cid)
+        parcel.writeString(cName)
+        parcel.writeString(cPicture)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    fun copy(): CatProfile{
+        return Gson().fromJson(Gson().toJson(this), this::class.java)
+    }
+
+    companion object CREATOR : Parcelable.Creator<CatProfile> {
+        override fun createFromParcel(parcel: Parcel): CatProfile {
+            return CatProfile(parcel)
+        }
+
+        override fun newArray(size: Int): Array<CatProfile?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
+data class Relation(
+    @SerializedName("uid")
+    var uid: String?,
+    @SerializedName("cid")
+    var cid: Int?
+)
 
 @Entity(tableName = "chatting_log")
 class ChattingLog{
@@ -142,6 +237,12 @@ class ChattingLog{
 interface ChattingLogDAO{
     @Query("select * from chatting_log where uid = :uid AND cid = :cid")
     fun getAll(uid: String?, cid: Int?):List<ChattingLog>
+
+    @Query("select * from chatting_log where uid = :uid AND cid = :cid AND `no` between :end AND :start")
+    fun getPart(uid: String?, cid: Int?, start: Int?, end: Int?):List<ChattingLog>
+
+    @Query("select MAX(`no`) from chatting_log")
+    fun getMax():Int
 
     @Insert(onConflict = REPLACE)
     fun insert(log:ChattingLog)

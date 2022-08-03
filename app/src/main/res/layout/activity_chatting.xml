@@ -133,4 +133,17 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <ImageButton
+        android:id="@+id/scrollButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_button_circle"
+        android:contentDescription="Scroll Button"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/chattingRecycler"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_expand_more_24" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,7 @@
     <string name="sign_up_text"><u>Sign Up</u></string>
     <string name="main_catting_title">Catting</string>
     <string name="main_user_info_title">User Info</string>
-    <string name="main_file_title">File</string>
+    <string name="main_cat_info_title">Cat Info</string>
     <string name="setting_title">Setting</string>
     <string name="sign_in_title">Welcome to Catting</string>
     <string name="chatting_title">Chatting</string>

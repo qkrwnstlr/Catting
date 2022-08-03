@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var signInResult :ActivityResultLauncher<Intent>
     lateinit var api: RetrofitApplication
 
-    var userInfo: UserInfo = UserInfo(null,null,null, arrayListOf())
+    var userInfo: UserInfo = UserInfo(null,null,null, arrayListOf<CatProfile>())
     var mBackWait:Long = 0
 
     init{
@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         private var instance:MainActivity? = null
         var isChattingFragmentNeedRefresh = true
         var isUserInfoFragmentNeedRefresh = true
+        var isCatInfoFragmentNeedRefresh = true
         fun getInstance(): MainActivity? {
             return instance
         }
@@ -132,9 +133,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun openChattingActivity(catInfo: CatInfo) {
+    fun openChattingActivity(catProfile: CatProfile) {
         val intent = Intent(this@MainActivity, ChattingActivity::class.java).apply {
-            putLargeExtra("catInfo",catInfo)
+            putLargeExtra("CatProfile",catProfile)
         }
         startActivity(intent)
     }

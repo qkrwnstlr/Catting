@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -19,13 +18,19 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.catting.databinding.ActivityCatInfoBinding
+import com.google.gson.Gson
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.ByteArrayOutputStream
-import java.io.FileNotFoundException
 
 class CatInfoActivity : BaseActivity() {
+    lateinit var api: RetrofitApplication
+
     lateinit var cameraResult: ActivityResultLauncher<Intent>
     lateinit var galleryResult: ActivityResultLauncher<Intent>
-    lateinit var catInfo: CatInfo
+    lateinit var catProfile: CatProfile
+    lateinit var catInfo:CatInfo
     lateinit var cPicture: Bitmap
 
     var index = -2
@@ -41,6 +46,8 @@ class CatInfoActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        api = MainActivity.getInstance()?.api!!
+
         setSupportActionBar(binding.toolbar)
         //Toolbar에 표시되는 제목의 표시 유무를 설정. false로 해야 custom한 툴바의 이름이 화면에 보인다.
         actionBar.setDisplayShowTitleEnabled(false)
@@ -48,29 +55,56 @@ class CatInfoActivity : BaseActivity() {
         actionBar.setDisplayHomeAsUpEnabled(true)
 
         index = intent.getIntExtra("index", -2)
-        if(intent.hasExtra("catInfo")){
-            catInfo = intent.getLargeExtra<CatInfo>("catInfo")!!
-            with(binding){
-                cName.setText(catInfo.cName)
-                bread.setText(catInfo.bread)
-                birthday.setText(catInfo.birthday)
-                gender.setText(catInfo.gender)
-                bio.setText(catInfo.bio)
+        if(intent.hasExtra("catProfile")){
+            catProfile = intent.getLargeExtra<CatProfile>("catProfile")!!
 
-                val decodeString = Base64.decode(catInfo.cPicture, Base64.DEFAULT)
+            api.getCatInfo(Relation(catProfile.uid, catProfile.cid)).enqueue(object: Callback<CatInfo>{
+                override fun onResponse(call: Call<CatInfo>, response: Response<CatInfo>) {
+                    val body = response.body().toString()
+                    if(body.isNotEmpty()){
+                        catInfo = Gson().fromJson(body, CatInfo::class.java)
+                    }
+                    Thread{
+                        runOnUiThread(Runnable {
+                            kotlin.run {
+                                with(binding){
+                                    cName.setText(catInfo.cName)
+                                    breed.setText(catInfo.breed)
+                                    birthday.setText(catInfo.birthday)
+                                    gender.setText(catInfo.gender)
+                                    bio.setText(catInfo.bio)
+                                    val decodeString = Base64.decode(
+                                        catInfo.cPicture,
+                                        Base64.DEFAULT
+                                    )
+                                    val decodedByte = BitmapFactory.decodeByteArray(
+                                        decodeString,
+                                        0,
+                                        decodeString.size
+                                    )
+                                    cPicture = decodedByte
+                                    imagePreview.setImageBitmap(decodedByte)
+                                    addCatButton.visibility = View.INVISIBLE
+                                    updateCatButton.visibility = View.VISIBLE
+                                }
+                            }
+                        })
+                    }
+                }
 
-                val decodedByte = BitmapFactory.decodeByteArray(decodeString, 0, decodeString.size)
-                cPicture = decodedByte
-                imagePreview.setImageBitmap(decodedByte)
-                addCatButton.text = "Edit Cat Info"
-            }
+                override fun onFailure(call: Call<CatInfo>, t: Throwable) {
+                    Log.d("ChattingActivity",t.message.toString())
+                    Log.d("ChattingActivity","fail")
+                }
+
+            })
         } else {
-            var cid = 0
-            for(i in 0..10){
-                cid = System.currentTimeMillis().toInt()
-                Log.d("CatInfoActivity","$cid")
+            val cid = System.currentTimeMillis().toInt()
+            catInfo = CatInfo(MainActivity.getInstance()?.userInfo!!.uid,cid,null,null,null,null,null,null)
+            with(binding){
+                addCatButton.visibility = View.VISIBLE
+                updateCatButton.visibility = View.INVISIBLE
             }
-            catInfo = CatInfo(cid,null,null,null,null,null,null)
         }
 
 
@@ -122,10 +156,9 @@ class CatInfoActivity : BaseActivity() {
     }
 
     fun setViews(){
-        Log.d("CatInfoActivity","setViews()")
         with(binding){
             imagePreview.setOnClickListener{
-                val dlg = CatInfoDialog(this@CatInfoActivity)
+                val dlg = CatInfoPictureDialog(this@CatInfoActivity)
                 dlg.setOnOKClickedListener {
                     when(it){
                         "gallery"->{
@@ -141,29 +174,105 @@ class CatInfoActivity : BaseActivity() {
             }
             addCatButton.setOnClickListener {
                 Log.d("CatInfoActivity","addCatButton")
-                if(cName.text.toString().isEmpty() || bread.text.toString().isEmpty() || birthday.text.toString().isEmpty() || gender.text.toString().isEmpty() || bio.text.toString().isEmpty() || !::cPicture.isInitialized){
+                if(cName.text.toString().isEmpty() || breed.text.toString().isEmpty() || birthday.text.toString().isEmpty() || gender.text.toString().isEmpty() || bio.text.toString().isEmpty() || !::cPicture.isInitialized){
                     Toast.makeText(this@CatInfoActivity, "값을 모두 입력해주세요", Toast.LENGTH_SHORT).show()
                 }
                 else {
                     val dlg = ProgressBarDialog(this@CatInfoActivity)
                     dlg.show()
+                    catInfo.uid = MainActivity.getInstance()?.userInfo!!.uid
                     catInfo.cName = cName.text.toString()
-                    catInfo.bread = bread.text.toString()
+                    catInfo.breed = breed.text.toString()
                     catInfo.birthday = birthday.text.toString()
                     catInfo.gender = gender.text.toString()
                     catInfo.bio = bio.text.toString()
                     val stream = ByteArrayOutputStream()
                     cPicture.compress(Bitmap.CompressFormat.PNG, 100, stream)
                     catInfo.cPicture = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT)
-                    val intent = Intent(this@CatInfoActivity, MainActivity::class.java).apply {
+
+                    //test
+                    catProfile = CatProfile(catInfo.uid, catInfo.cid, catInfo.cName, catInfo.cPicture)
+                    val intent = Intent(
+                        this@CatInfoActivity,
+                        MainActivity::class.java).apply {
                         putExtra("index", index)
-                        putLargeExtra("catInfo", catInfo)
+                        putLargeExtra("catProfile", catProfile)
                     }
-//                    intent.putExtra("catInfo", catInfo)
-//                    intent.putExtra("index", index)
                     setResult(RESULT_OK, intent)
                     dlg.dismiss()
                     finish()
+                    //
+
+                    api.addCatInfo(catInfo).enqueue(object: Callback<CatProfile>{
+                        override fun onResponse(
+                            call: Call<CatProfile>,
+                            response: Response<CatProfile>
+                        ) {
+                            val body = response.body().toString()
+                            if(body.isNotEmpty()){
+                                catProfile = Gson().fromJson(body, catProfile::class.java)
+                                val intent = Intent(
+                                    this@CatInfoActivity,
+                                    MainActivity::class.java).apply {
+                                    putExtra("index", index)
+                                    putLargeExtra("catProfile", catProfile)
+                                }
+                                setResult(RESULT_OK, intent)
+                                dlg.dismiss()
+                                finish()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<CatProfile>, t: Throwable) {
+                            Log.d("CatInfoActivity",t.message.toString())
+                            Log.d("CatInfoActivity","fail")
+                        }
+
+                    })
+                }
+            }
+            updateCatButton.setOnClickListener {
+                Log.d("CatInfoActivity","addCatButton")
+                if(cName.text.toString().isEmpty() || breed.text.toString().isEmpty() || birthday.text.toString().isEmpty() || gender.text.toString().isEmpty() || bio.text.toString().isEmpty() || !::cPicture.isInitialized){
+                    Toast.makeText(this@CatInfoActivity, "값을 모두 입력해주세요", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    val dlg = ProgressBarDialog(this@CatInfoActivity)
+                    dlg.show()
+                    catInfo.cName = cName.text.toString()
+                    catInfo.breed = breed.text.toString()
+                    catInfo.birthday = birthday.text.toString()
+                    catInfo.gender = gender.text.toString()
+                    catInfo.bio = bio.text.toString()
+                    val stream = ByteArrayOutputStream()
+                    cPicture.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                    catInfo.cPicture = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT)
+                    api.updateCatInfo(catInfo).enqueue(object: Callback<CatProfile>{
+                        override fun onResponse(
+                            call: Call<CatProfile>,
+                            response: Response<CatProfile>
+                        ) {
+                            val body = response.body().toString()
+                            if(body.isNotEmpty()){
+                                catProfile = Gson().fromJson(body, catProfile::class.java)
+                                val intent = Intent(
+                                    this@CatInfoActivity,
+                                    MainActivity::class.java).apply {
+                                    putExtra("index", index)
+                                    putLargeExtra("catInfo", catInfo)
+                                }
+                                setResult(RESULT_OK, intent)
+                                dlg.dismiss()
+                                finish()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<CatProfile>, t: Throwable) {
+                            Log.d("CatInfoActivity",t.message.toString())
+                            Log.d("CatInfoActivity","fail")
+                        }
+
+                    })
                 }
             }
         }

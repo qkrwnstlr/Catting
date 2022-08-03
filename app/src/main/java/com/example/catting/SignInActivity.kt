@@ -38,7 +38,6 @@ class SignInActivity : AppCompatActivity() {
     var signInInfoList = listOf<SignInInfo>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("SignInFragment","onCreate")
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp">
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/bazzi"
+        android:gravity="center"
+        android:text="Are you sure to delete the cat?"
+        android:textColor="@color/main_black"
+        android:textSize="24sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button"
+            android:fontFamily="@font/bazzi"
+            android:text="Yes"
+            android:textAllCaps="false"
+            android:textColor="@color/main_black"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button"
+            android:fontFamily="@font/bazzi"
+            android:text="No"
+            android:textAllCaps="false"
+            android:textColor="@color/main_black"
+            android:textSize="24sp" />
+    </LinearLayout>
+</LinearLayout>
