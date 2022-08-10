@@ -58,12 +58,13 @@ class CatInfoActivity : BaseActivity() {
         if(intent.hasExtra("catProfile")){
             catProfile = intent.getLargeExtra<CatProfile>("catProfile")!!
 
+            //<<>>
+            catInfo = CatInfo(null,null,null,null,null,null,null,null)
+            //
+
             api.getCatInfo(Relation(catProfile.uid, catProfile.cid)).enqueue(object: Callback<CatInfo>{
                 override fun onResponse(call: Call<CatInfo>, response: Response<CatInfo>) {
-                    val body = response.body().toString()
-                    if(body.isNotEmpty()){
-                        catInfo = Gson().fromJson(body, CatInfo::class.java)
-                    }
+                    val catInfo = response.body()!!
                     Thread{
                         runOnUiThread(Runnable {
                             kotlin.run {
@@ -189,38 +190,37 @@ class CatInfoActivity : BaseActivity() {
                     val stream = ByteArrayOutputStream()
                     cPicture.compress(Bitmap.CompressFormat.PNG, 100, stream)
                     catInfo.cPicture = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT)
+/*
 
-                    //test
-                    catProfile = CatProfile(catInfo.uid, catInfo.cid, catInfo.cName, catInfo.cPicture)
-                    val intent = Intent(
-                        this@CatInfoActivity,
-                        MainActivity::class.java).apply {
-                        putExtra("index", index)
-                        putLargeExtra("catProfile", catProfile)
-                    }
-                    setResult(RESULT_OK, intent)
-                    dlg.dismiss()
-                    finish()
-                    //
+                //test
+                catProfile = CatProfile(catInfo.uid, catInfo.cid, catInfo.cName, catInfo.cPicture)
+                val intent = Intent(
+                    this@CatInfoActivity,
+                    MainActivity::class.java).apply {
+                    putExtra("index", index)
+                    putLargeExtra("catProfile", catProfile)
+                }
+                setResult(RESULT_OK, intent)
+                dlg.dismiss()
+                finish()
+                //
 
+*/
                     api.addCatInfo(catInfo).enqueue(object: Callback<CatProfile>{
                         override fun onResponse(
                             call: Call<CatProfile>,
                             response: Response<CatProfile>
                         ) {
-                            val body = response.body().toString()
-                            if(body.isNotEmpty()){
-                                catProfile = Gson().fromJson(body, catProfile::class.java)
-                                val intent = Intent(
-                                    this@CatInfoActivity,
-                                    MainActivity::class.java).apply {
-                                    putExtra("index", index)
-                                    putLargeExtra("catProfile", catProfile)
-                                }
-                                setResult(RESULT_OK, intent)
-                                dlg.dismiss()
-                                finish()
+                            catProfile = response.body()!!
+                            val intent = Intent(
+                                this@CatInfoActivity,
+                                MainActivity::class.java).apply {
+                                putExtra("index", index)
+                                putLargeExtra("catProfile", catProfile)
                             }
+                            setResult(RESULT_OK, intent)
+                            dlg.dismiss()
+                            finish()
                         }
 
                         override fun onFailure(call: Call<CatProfile>, t: Throwable) {
@@ -252,19 +252,16 @@ class CatInfoActivity : BaseActivity() {
                             call: Call<CatProfile>,
                             response: Response<CatProfile>
                         ) {
-                            val body = response.body().toString()
-                            if(body.isNotEmpty()){
-                                catProfile = Gson().fromJson(body, catProfile::class.java)
-                                val intent = Intent(
-                                    this@CatInfoActivity,
-                                    MainActivity::class.java).apply {
-                                    putExtra("index", index)
-                                    putLargeExtra("catInfo", catInfo)
-                                }
-                                setResult(RESULT_OK, intent)
-                                dlg.dismiss()
-                                finish()
+                            catProfile = response.body()!!
+                            val intent = Intent(
+                                this@CatInfoActivity,
+                                MainActivity::class.java).apply {
+                                putExtra("index", index)
+                                putLargeExtra("catInfo", catInfo)
                             }
+                            setResult(RESULT_OK, intent)
+                            dlg.dismiss()
+                            finish()
                         }
 
                         override fun onFailure(call: Call<CatProfile>, t: Throwable) {

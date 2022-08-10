@@ -67,11 +67,13 @@ class UserInfoFragment : Fragment() {
                 userInfo.nickName = nickName.text.toString()
                 userInfo.camID = camID.text.toString()
 
+/*
                 // test
                 mainActivity.userInfo = userInfo
                 MainActivity.isUserInfoFragmentNeedRefresh = true
                 mainActivity.binding.mainTab.selectTab(mainActivity.binding.mainTab.getTabAt(0))
                 //
+*/
 
                 val dlg = ProgressBarDialog(mainActivity)
                 if(userInfo.nickName!!.isNotEmpty() && userInfo.camID!!.isNotEmpty()) {
@@ -81,17 +83,14 @@ class UserInfoFragment : Fragment() {
                             call: Call<UserProfile>,
                             response: Response<UserProfile>
                         ) {
-                            val body = response.body().toString()
-                            if (body.isNotEmpty()) {
-                                mainActivity.userInfo = UserInfo(
-                                    Gson().fromJson(body, UserProfile::class.java),
-                                    mainActivity.userInfo.cats
-                                )
-                                MainActivity.isUserInfoFragmentNeedRefresh = true
-                                mainActivity.binding.mainTab.selectTab(
-                                    mainActivity.binding.mainTab.getTabAt(0)
-                                )
-                            }
+                            mainActivity.userInfo = UserInfo(
+                                response.body()!!,
+                                mainActivity.userInfo.cats
+                            )
+                            MainActivity.isUserInfoFragmentNeedRefresh = true
+                            mainActivity.binding.mainTab.selectTab(
+                                mainActivity.binding.mainTab.getTabAt(0)
+                            )
                         }
 
                         override fun onFailure(call: Call<UserProfile>, t: Throwable) {
@@ -111,11 +110,13 @@ class UserInfoFragment : Fragment() {
                 userInfo.nickName = nickName.text.toString()
                 userInfo.camID = camID.text.toString()
 
+/*
                 // test
                 mainActivity.userInfo = userInfo
                 MainActivity.isUserInfoFragmentNeedRefresh = true
                 mainActivity.binding.mainTab.selectTab(mainActivity.binding.mainTab.getTabAt(2))
                 //
+*/
 
                 val dlg = ProgressBarDialog(mainActivity)
                 if(userInfo.nickName!!.isNotEmpty() && userInfo.camID!!.isNotEmpty()) {
@@ -125,16 +126,12 @@ class UserInfoFragment : Fragment() {
                             call: Call<UserProfile>,
                             response: Response<UserProfile>
                         ) {
-                            val body = response.body().toString()
-                            if (body.isNotEmpty()) {
-                                mainActivity.userInfo = UserInfo(
-                                    Gson().fromJson(body, UserProfile::class.java)
-                                )
-                                MainActivity.isUserInfoFragmentNeedRefresh = true
-                                mainActivity.binding.mainTab.selectTab(
-                                    mainActivity.binding.mainTab.getTabAt(2)
-                                )
-                            }
+                            mainActivity.userInfo = UserInfo(response.body()!!)
+                            MainActivity.isUserInfoFragmentNeedRefresh = true
+                            mainActivity.binding.mainTab.selectTab(
+                                mainActivity.binding.mainTab.getTabAt(2)
+                            )
+                            mainActivity.binding.mainTab.selectTab(mainActivity.binding.mainTab.getTabAt(2))
                         }
 
                         override fun onFailure(call: Call<UserProfile>, t: Throwable) {

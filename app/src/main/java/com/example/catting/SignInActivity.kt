@@ -31,6 +31,7 @@ class SignInActivity : AppCompatActivity() {
     val binding by lazy { ActivitySignInBinding.inflate(layoutInflater) }
     //lateinit var socket : Socket
     lateinit var signUpResult: ActivityResultLauncher<Intent>
+    lateinit var mainActivity: MainActivity
     lateinit var api: RetrofitApplication
     lateinit var auth:FirebaseAuth
 
@@ -40,6 +41,8 @@ class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        mainActivity = MainActivity.getInstance()!!
 
         signInInfoHelper = Room.databaseBuilder(this,SignInInfoHelper::class.java,"sign_in_info_db")
             .build()
@@ -77,36 +80,40 @@ class SignInActivity : AppCompatActivity() {
                             Toast.makeText(this@SignInActivity, "환영합니다.", Toast.LENGTH_LONG).show()
                             val intent = Intent(this@SignInActivity, SignInActivity::class.java)
 
+/*
                             //test
                             setResult(RESULT_FIRST_USER, intent)
                             finish()
                             //
+*/
 
-                            /*api = MainActivity.getInstance()?.api!!
-                            api.getUserInfo(it.result.user!!.uid).enqueue(object: Callback<UserInfo> {
+                            api = mainActivity.api
+                            api.getUserInfo(Uid(it.result.user!!.uid)).enqueue(object: Callback<UserInfo> {
                                 override fun onResponse(
                                     call: Call<UserInfo>,
                                     response: Response<UserInfo>
                                 ) {
-                                    val body = response.body().toString()
-                                    if(body.isNotEmpty()){
-                                        val userInfo = Gson().fromJson(body, UserInfo::class.java)
-                                        intent.putExtra("userInfo", userInfo)
-                                        setResult(RESULT_OK, intent)
+                                    val userInfo = response.body()!!
+                                    Log.d("SignInActivity","$userInfo")
+                                    if(userInfo.uid == "fail"){
+                                        //UserInfo Fragment 실행 -> UserInfo Fragment 는 api.sendUserInfo 로 새로운 유저 db에 저장
+                                        intent.putExtra("uid", it.result.user!!.uid)
+                                        setResult(RESULT_FIRST_USER, intent)
                                         finish()
                                     }
                                     else {
-                                        setResult(RESULT_FIRST_USER, intent)
+                                        intent.putExtra("userInfo", userInfo)
+                                        setResult(RESULT_OK, intent)
                                         finish()
-                                        //UserInfo Fragment 실행 -> UserInfo Fragment 는 api.sendUserInfo 로 새로운 유저 db에 저장
                                     }
                                 }
 
                                 override fun onFailure(call: Call<UserInfo>, t: Throwable) {
                                     Log.d("SignInActivity",t.message.toString())
                                     Log.d("SignInActivity","fail")
+                                    mainActivity.api = RetrofitApplication.create()
                                 }
-                            })*/
+                            })
                             /*socket = MainActivity.getInstance()?.socket!!
                             val jsonObject = JSONObject()
                             jsonObject.put("email",email)

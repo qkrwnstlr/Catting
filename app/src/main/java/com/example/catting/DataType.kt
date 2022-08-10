@@ -8,6 +8,11 @@ import androidx.room.OnConflictStrategy.REPLACE
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 
+data class Uid(
+    @SerializedName("uid")
+    val uid: String?
+)
+
 data class UserProfile(
     @SerializedName("uid")
     val uid: String?,
@@ -49,7 +54,7 @@ data class UserProfile(
 }
 
 data class  UserInfo(
-    @SerializedName("uid")
+    @SerializedName(value = "uid", alternate = ["id"])
     val uid: String?,
     @SerializedName("nickName")
     var nickName: String?,

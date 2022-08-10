@@ -8,7 +8,7 @@ import retrofit2.http.*
 
 interface RetrofitApplication {
     @POST("/getUser")
-    fun getUserInfo(@Body uid: String): Call<UserInfo>
+    fun getUserInfo(@Body uid: Uid): Call<UserInfo>
 
     @POST("/addUser")
     fun addUserInfo(@Body userInfo: UserInfo): Call<UserProfile>
@@ -32,7 +32,7 @@ interface RetrofitApplication {
     fun sendMessage(@Body chattingLog: ChattingLog): Call<ChattingLog>
 
     companion object {
-        private const val BASE_URL = "http://10.0.2.2:3030"
+        private const val BASE_URL = "http://10.0.2.2:3000"
         fun create(): RetrofitApplication{
             val gson = GsonBuilder().setLenient().create()
             return Retrofit.Builder()

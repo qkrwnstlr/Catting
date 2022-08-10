@@ -21,7 +21,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FileFragment : Fragment() {
+class CatInfoFragment : Fragment() {
     lateinit var binding: FragmentCatInfoBinding
     lateinit var mainActivity: MainActivity
     lateinit var api:RetrofitApplication
@@ -135,25 +135,23 @@ class CatInfoAdapter(val listData: ArrayList<CatProfile>, val catInfoResult: Act
                     dlg.setOnOKClickedListener {
                         when(it){
                             "yes"->{
+/*
                                 // test
                                 removeItem(position)
                                 mainActivity.userInfo.cats.removeAt(position)
                                 MainActivity.isCatInfoFragmentNeedRefresh = true
                                 MainActivity.isChattingFragmentNeedRefresh = true
                                 //
-
+*/
                                 api.deleteCatInfo(Relation(catProfile.uid, catProfile.cid)).enqueue(object :Callback<Relation>{
                                     override fun onResponse(
                                         call: Call<Relation>,
                                         response: Response<Relation>
                                     ) {
-                                        val body = response.body().toString()
-                                        if(body.isNotEmpty()){
-                                            removeItem(position)
-                                            mainActivity.userInfo.cats.removeAt(position)
-                                            MainActivity.isCatInfoFragmentNeedRefresh = true
-                                            MainActivity.isChattingFragmentNeedRefresh = true
-                                        }
+                                        removeItem(position)
+                                        mainActivity.userInfo.cats.removeAt(position)
+                                        MainActivity.isCatInfoFragmentNeedRefresh = true
+                                        MainActivity.isChattingFragmentNeedRefresh = true
                                     }
 
                                     override fun onFailure(call: Call<Relation>, t: Throwable) {
