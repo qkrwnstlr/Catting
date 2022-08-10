@@ -145,7 +145,7 @@ class CatInfoActivity : BaseActivity() {
         var height = options.outHeight
         var sampleSize = 1
         while (true) {//2번
-            if (width / 2 < resize || height / 2 < resize)
+            if (width / 2 < resize && height / 2 < resize)
                 break;
             width /= 2;
             height /= 2;
