@@ -1,10 +1,13 @@
 package com.example.catting
 
 import android.Manifest
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.icu.util.Calendar
+import android.icu.util.GregorianCalendar
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -14,9 +17,11 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import com.example.catting.databinding.ActivityCatInfoBinding
 import com.google.gson.Gson
 import retrofit2.Call
@@ -56,41 +61,35 @@ class CatInfoActivity : BaseActivity() {
 
         index = intent.getIntExtra("index", -2)
         if(intent.hasExtra("catProfile")){
-            catProfile = intent.getLargeExtra<CatProfile>("catProfile")!!
-
-            //<<>>
-            catInfo = CatInfo(null,null,null,null,null,null,null,null)
-            //
+            catProfile = getLargeExtra<CatProfile>("catProfile")!!
 
             api.getCatInfo(Relation(catProfile.uid, catProfile.cid)).enqueue(object: Callback<CatInfo>{
                 override fun onResponse(call: Call<CatInfo>, response: Response<CatInfo>) {
-                    val catInfo = response.body()!!
-                    Thread{
-                        runOnUiThread(Runnable {
-                            kotlin.run {
-                                with(binding){
-                                    cName.setText(catInfo.cName)
-                                    breed.setText(catInfo.breed)
-                                    birthday.setText(catInfo.birthday)
-                                    gender.setText(catInfo.gender)
-                                    bio.setText(catInfo.bio)
-                                    val decodeString = Base64.decode(
-                                        catInfo.cPicture,
-                                        Base64.DEFAULT
-                                    )
-                                    val decodedByte = BitmapFactory.decodeByteArray(
-                                        decodeString,
-                                        0,
-                                        decodeString.size
-                                    )
-                                    cPicture = decodedByte
-                                    imagePreview.setImageBitmap(decodedByte)
-                                    addCatButton.visibility = View.INVISIBLE
-                                    updateCatButton.visibility = View.VISIBLE
-                                }
+                    catInfo = response.body()!!
+                    runOnUiThread(Runnable {
+                        kotlin.run {
+                            with(binding){
+                                cName.setText(catInfo.cName)
+                                breed.setText(catInfo.breed)
+                                birthday.text = catInfo.birthDate
+                                gender.setText(catInfo.gender)
+                                bio.setText(catInfo.bio)
+                                val decodeString = Base64.decode(
+                                    catInfo.cPicture,
+                                    Base64.DEFAULT
+                                )
+                                val decodedByte = BitmapFactory.decodeByteArray(
+                                    decodeString,
+                                    0,
+                                    decodeString.size
+                                )
+                                cPicture = decodedByte
+                                imagePreview.setImageBitmap(decodedByte)
+                                addCatButton.visibility = View.INVISIBLE
+                                updateCatButton.visibility = View.VISIBLE
                             }
-                        })
-                    }
+                        }
+                    })
                 }
 
                 override fun onFailure(call: Call<CatInfo>, t: Throwable) {
@@ -173,6 +172,24 @@ class CatInfoActivity : BaseActivity() {
                 }
                 dlg.show()
             }
+
+            calendarButton.setOnClickListener {
+                val today = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    GregorianCalendar()
+                } else {
+                    TODO("VERSION.SDK_INT < N")
+                }
+                val year: Int = today.get(Calendar.YEAR)
+                val month: Int = today.get(Calendar.MONTH)
+                val date: Int = today.get(Calendar.DATE)
+                val dlg = DatePickerDialog(this@CatInfoActivity, object : DatePickerDialog.OnDateSetListener {
+                    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+                        birthday.text = "${year}-${month+1}-${dayOfMonth}"
+                    }
+                }, year, month, date)
+                dlg.show()
+            }
+
             addCatButton.setOnClickListener {
                 Log.d("CatInfoActivity","addCatButton")
                 if(cName.text.toString().isEmpty() || breed.text.toString().isEmpty() || birthday.text.toString().isEmpty() || gender.text.toString().isEmpty() || bio.text.toString().isEmpty() || !::cPicture.isInitialized){
@@ -184,7 +201,7 @@ class CatInfoActivity : BaseActivity() {
                     catInfo.uid = MainActivity.getInstance()?.userInfo!!.uid
                     catInfo.cName = cName.text.toString()
                     catInfo.breed = breed.text.toString()
-                    catInfo.birthday = birthday.text.toString()
+                    catInfo.birthDate = birthday.text.toString()
                     catInfo.gender = gender.text.toString()
                     catInfo.bio = bio.text.toString()
                     val stream = ByteArrayOutputStream()
@@ -212,25 +229,29 @@ class CatInfoActivity : BaseActivity() {
                             response: Response<CatProfile>
                         ) {
                             catProfile = response.body()!!
-                            val intent = Intent(
-                                this@CatInfoActivity,
-                                MainActivity::class.java).apply {
-                                putExtra("index", index)
-                                putLargeExtra("catProfile", catProfile)
+                            if(catProfile.uid == "fail"){
+                                dlg.dismiss()
+                                Toast.makeText(this@CatInfoActivity,"다시 시도해 주세요",Toast.LENGTH_SHORT).show()
                             }
-                            setResult(RESULT_OK, intent)
-                            dlg.dismiss()
-                            finish()
+                            else {
+                                intent.putExtra("index", index)
+                                intent.putLargeExtra("catProfile", catProfile)
+                                setResult(RESULT_OK, intent)
+                                dlg.dismiss()
+                                finish()
+                            }
                         }
 
                         override fun onFailure(call: Call<CatProfile>, t: Throwable) {
                             Log.d("CatInfoActivity",t.message.toString())
                             Log.d("CatInfoActivity","fail")
+                            dlg.dismiss()
                         }
 
                     })
                 }
             }
+
             updateCatButton.setOnClickListener {
                 Log.d("CatInfoActivity","addCatButton")
                 if(cName.text.toString().isEmpty() || breed.text.toString().isEmpty() || birthday.text.toString().isEmpty() || gender.text.toString().isEmpty() || bio.text.toString().isEmpty() || !::cPicture.isInitialized){
@@ -241,7 +262,7 @@ class CatInfoActivity : BaseActivity() {
                     dlg.show()
                     catInfo.cName = cName.text.toString()
                     catInfo.breed = breed.text.toString()
-                    catInfo.birthday = birthday.text.toString()
+                    catInfo.birthDate = birthday.text.toString()
                     catInfo.gender = gender.text.toString()
                     catInfo.bio = bio.text.toString()
                     val stream = ByteArrayOutputStream()
@@ -253,15 +274,17 @@ class CatInfoActivity : BaseActivity() {
                             response: Response<CatProfile>
                         ) {
                             catProfile = response.body()!!
-                            val intent = Intent(
-                                this@CatInfoActivity,
-                                MainActivity::class.java).apply {
-                                putExtra("index", index)
-                                putLargeExtra("catInfo", catInfo)
+                            if(catProfile.uid == "fail"){
+                                dlg.dismiss()
+                                Toast.makeText(this@CatInfoActivity,"다시 시도해 주세요",Toast.LENGTH_SHORT).show()
                             }
-                            setResult(RESULT_OK, intent)
-                            dlg.dismiss()
-                            finish()
+                            else {
+                                intent.putExtra("index", index)
+                                intent.putLargeExtra("catProfile", catProfile)
+                                setResult(RESULT_OK, intent)
+                                dlg.dismiss()
+                                finish()
+                            }
                         }
 
                         override fun onFailure(call: Call<CatProfile>, t: Throwable) {

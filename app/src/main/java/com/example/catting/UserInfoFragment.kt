@@ -83,14 +83,22 @@ class UserInfoFragment : Fragment() {
                             call: Call<UserProfile>,
                             response: Response<UserProfile>
                         ) {
-                            mainActivity.userInfo = UserInfo(
-                                response.body()!!,
-                                mainActivity.userInfo.cats
-                            )
-                            MainActivity.isUserInfoFragmentNeedRefresh = true
-                            mainActivity.binding.mainTab.selectTab(
-                                mainActivity.binding.mainTab.getTabAt(0)
-                            )
+                            val userProfile = response.body()!!
+                            if(userProfile.uid == "fail"){
+                                dlg.dismiss()
+                                Toast.makeText(mainActivity,"다시 시도해 주세요",Toast.LENGTH_SHORT).show()
+                            }
+                            else {
+                                mainActivity.userInfo = UserInfo(
+                                    userProfile,
+                                    mainActivity.userInfo.cats
+                                )
+                                MainActivity.isUserInfoFragmentNeedRefresh = true
+                                dlg.dismiss()
+                                mainActivity.binding.mainTab.selectTab(
+                                    mainActivity.binding.mainTab.getTabAt(0)
+                                )
+                            }
                         }
 
                         override fun onFailure(call: Call<UserProfile>, t: Throwable) {
@@ -126,12 +134,19 @@ class UserInfoFragment : Fragment() {
                             call: Call<UserProfile>,
                             response: Response<UserProfile>
                         ) {
-                            mainActivity.userInfo = UserInfo(response.body()!!)
-                            MainActivity.isUserInfoFragmentNeedRefresh = true
-                            mainActivity.binding.mainTab.selectTab(
-                                mainActivity.binding.mainTab.getTabAt(2)
-                            )
-                            mainActivity.binding.mainTab.selectTab(mainActivity.binding.mainTab.getTabAt(2))
+                            val userProfile = response.body()!!
+                            if(userProfile.uid == "fail"){
+                                dlg.dismiss()
+                                Toast.makeText(mainActivity,"다시 시도해 주세요",Toast.LENGTH_SHORT).show()
+                            }
+                            else {
+                                mainActivity.userInfo = UserInfo(userProfile)
+                                MainActivity.isUserInfoFragmentNeedRefresh = true
+                                dlg.dismiss()
+                                mainActivity.binding.mainTab.selectTab(
+                                    mainActivity.binding.mainTab.getTabAt(2)
+                                )
+                            }
                         }
 
                         override fun onFailure(call: Call<UserProfile>, t: Throwable) {

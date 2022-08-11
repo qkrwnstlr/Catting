@@ -107,8 +107,8 @@ data class CatInfo(
     var cName: String?,
     @SerializedName("breed")
     var breed: String?,
-    @SerializedName("birthday")
-    var birthday: String?,
+    @SerializedName("birthDate")
+    var birthDate: String?,
     @SerializedName("gender")
     var gender: String?,
     @SerializedName("cPicture")
@@ -132,7 +132,7 @@ data class CatInfo(
         parcel.writeValue(cid)
         parcel.writeString(cName)
         parcel.writeString(breed)
-        parcel.writeString(birthday)
+        parcel.writeString(birthDate)
         parcel.writeString(gender)
         parcel.writeString(cPicture)
         parcel.writeString(bio)

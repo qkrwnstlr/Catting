@@ -78,8 +78,6 @@ class SignInActivity : AppCompatActivity() {
                                 signInInfoHelper.signInInfoDao().updateSignInInfo(SignInInfo(email, password))
                             }
                             Toast.makeText(this@SignInActivity, "환영합니다.", Toast.LENGTH_LONG).show()
-                            val intent = Intent(this@SignInActivity, SignInActivity::class.java)
-
 /*
                             //test
                             setResult(RESULT_FIRST_USER, intent)

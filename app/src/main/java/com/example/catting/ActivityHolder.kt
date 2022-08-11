@@ -20,6 +20,6 @@ fun Intent.putLargeExtra(key:String, value:Any?){
     }
 }
 
-inline fun <reified T: Any> Intent.getLargeExtra(key:String): T?{
+inline fun <reified T: Any> getLargeExtra(key: String): T?{
     return ActivityHolder.getExtra(key) as T?
 }

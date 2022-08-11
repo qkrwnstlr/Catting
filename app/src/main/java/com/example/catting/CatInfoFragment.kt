@@ -52,7 +52,7 @@ class CatInfoFragment : Fragment() {
             if(it.resultCode == AppCompatActivity.RESULT_OK){
                 val data: Intent? = it.data
                 val index = data?.getIntExtra("index", -2)
-                val result = data?.getLargeExtra<CatProfile>("catProfile")!!
+                val result = getLargeExtra<CatProfile>("catProfile")!!
                 Log.d("UserInfoFragment","data?.getLargeExtra = ${result.cPicture!!.length}")
                 when(index){
                     -2 -> { }
@@ -149,9 +149,11 @@ class CatInfoAdapter(val listData: ArrayList<CatProfile>, val catInfoResult: Act
                                         response: Response<Relation>
                                     ) {
                                         removeItem(position)
+                                        // 지금 이거 안먹음... 뭘까??
                                         mainActivity.userInfo.cats.removeAt(position)
                                         MainActivity.isCatInfoFragmentNeedRefresh = true
                                         MainActivity.isChattingFragmentNeedRefresh = true
+                                        // 화면 다시 그리기 필요
                                     }
 
                                     override fun onFailure(call: Call<Relation>, t: Throwable) {

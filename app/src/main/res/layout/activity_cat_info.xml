@@ -56,7 +56,7 @@
                 android:ems="10"
                 android:fontFamily="@font/bazzi"
                 android:hint="Cat Name"
-                android:inputType="textEmailAddress"
+                android:inputType="textPersonName"
                 android:padding="10dp"
                 android:textColor="@color/main_black"
                 android:textSize="24sp"
@@ -74,7 +74,7 @@
                 android:ems="10"
                 android:fontFamily="@font/bazzi"
                 android:hint="Breed"
-                android:inputType="textEmailAddress"
+                android:inputType="textPersonName"
                 android:padding="10dp"
                 android:textColor="@color/main_black"
                 android:textSize="24sp"
@@ -83,7 +83,7 @@
                 app:layout_constraintStart_toStartOf="@+id/cName"
                 app:layout_constraintTop_toBottomOf="@+id/cName" />
 
-            <EditText
+            <TextView
                 android:id="@+id/birthday"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
@@ -92,7 +92,6 @@
                 android:ems="10"
                 android:fontFamily="@font/bazzi"
                 android:hint="Birthday"
-                android:inputType="textEmailAddress"
                 android:padding="10dp"
                 android:textColor="@color/main_black"
                 android:textSize="24sp"
@@ -110,7 +109,7 @@
                 android:ems="10"
                 android:fontFamily="@font/bazzi"
                 android:hint="Gender"
-                android:inputType="textEmailAddress"
+                android:inputType="textPersonName"
                 android:padding="10dp"
                 android:textColor="@color/main_black"
                 android:textSize="24sp"
@@ -128,7 +127,7 @@
                 android:ems="10"
                 android:fontFamily="@font/bazzi"
                 android:hint="Bio"
-                android:inputType="textEmailAddress"
+                android:inputType="textLongMessage"
                 android:padding="10dp"
                 android:textColor="@color/main_black"
                 android:textSize="24sp"
@@ -182,6 +181,17 @@
                 app:layout_constraintEnd_toEndOf="@+id/cName"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="@+id/cName" />
+
+            <ImageView
+                android:id="@+id/calendarButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/birthday"
+                app:layout_constraintEnd_toEndOf="@+id/birthday"
+                app:layout_constraintTop_toTopOf="@+id/birthday"
+                app:srcCompat="@drawable/ic_baseline_edit_calendar_24" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
